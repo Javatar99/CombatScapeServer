@@ -12,7 +12,7 @@ import org.jboss.netty.util.HashedWheelTimer;
 import RS2.clan.ClanChatHandler;
 import RS2.fileserver.impl.FileServer;
 import RS2.model.item.ItemHandler;
-import RS2.model.npc.NPCHandler;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.model.object.ObjectHandler;
 import RS2.model.object.ObjectManager;
 import RS2.model.player.Player;
@@ -164,7 +164,6 @@ public class GameEngine {
                         itemHandler.process();
                         playerHandler.process();	
                         npcHandler.process();
-                        shopHandler.process();
                         objectManager.process();
                         }
                 });

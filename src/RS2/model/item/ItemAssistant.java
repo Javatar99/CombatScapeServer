@@ -2,7 +2,7 @@ package RS2.model.item;
 
 import RS2.GameEngine;
 import RS2.Settings;
-import RS2.model.npc.NPCHandler;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.model.player.Client;
 import RS2.model.player.PlayerHandler;
 import RS2.util.Misc;
@@ -2033,7 +2033,7 @@ public class ItemAssistant {
 	 * @param id
 	 * @param amount
 	 */
-	public void deleteItem(int id, int amount) {
+	public void deleteNonStackable(int id, int amount) {
 		if (id <= 0)
 			return;
         for (int j = 0; j < c.inventory.getItemIds().length; j++) {
@@ -2063,7 +2063,7 @@ public class ItemAssistant {
 		}
 	}
 
-	public void deleteItem2(int id, int amount) {
+	public void deleteItemAmount(int id, int amount) {
 		int am = amount;
         for (int i = 0; i < c.inventory.getItemIds().length; i++) {
 			if (am == 0) {
@@ -2250,7 +2250,7 @@ public class ItemAssistant {
 		for (int i = 0; i < Settings.ITEM_LIMIT; i++) {
 			if (GameEngine.itemHandler.ItemList[i] != null) {
 				if (GameEngine.itemHandler.ItemList[i].itemId == ItemID) {
-					return GameEngine.itemHandler.ItemList[i].itemName;
+					return GameEngine.itemHandler.ItemList[i].itemName.toLowerCase();
 				}
 			}
 		}
@@ -2460,9 +2460,9 @@ public class ItemAssistant {
 	 * Makes the godsword blade.
 	 */
 	public void makeBlade() {
-		deleteItem(11710, 1);
-		deleteItem(11712, 1);
-		deleteItem(11714, 1);
+		deleteNonStackable(11710, 1);
+		deleteNonStackable(11712, 1);
+		deleteNonStackable(11714, 1);
 		addItem(11690, 1);
 		c.sendMessage("You combine the shards to make a blade.");
 	}
@@ -2475,8 +2475,8 @@ public class ItemAssistant {
 	public void makeGodsword(int i) {
 		int godsword = i - 8;
 		if (playerHasItem(11690) && playerHasItem(i)) {
-			deleteItem(11690, 1);
-			deleteItem(i, 1);
+			deleteNonStackable(11690, 1);
+			deleteNonStackable(i, 1);
 			addItem(i - 8, 1);
 			c.sendMessage("You combine the hilt and the blade to make a godsword.");
 		}

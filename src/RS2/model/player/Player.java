@@ -3,10 +3,11 @@ package RS2.model.player;
 import RS2.Settings;
 import RS2.model.item.Item;
 import RS2.model.npc.NPC;
-import RS2.model.npc.NPCHandler;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.model.player.itemContainer.impl.Bank;
 import RS2.model.player.itemContainer.impl.Equipment;
 import RS2.model.player.itemContainer.impl.Inventory;
+import RS2.model.shop.definitions.ShopLoader;
 import RS2.tick.Scheduler;
 import RS2.tick.Tick;
 import RS2.util.ISAACCipher;
@@ -642,8 +643,8 @@ public abstract class Player {
 
 	public void updateshop(int i) {
 		Client p = (Client) PlayerHandler.players[playerId];
-		p.getShops().resetShop(i);
-	}
+        p.getShops().resetShop(ShopLoader.shops.get(i));
+    }
 
 	public void println_debug(String str) {
 		System.out.println("[player-" + playerId + "]: " + str);

@@ -1,7 +1,7 @@
 package RS2.model.player.packets;
 
 import RS2.Settings;
-import RS2.model.npc.NPCHandler;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.model.player.Client;
 import RS2.model.player.PacketType;
 import RS2.model.player.Player;
@@ -11,7 +11,9 @@ import RS2.tick.Tick;
  * Click NPC
  */
 public class ClickNPC implements PacketType {
-	public static final int ATTACK_NPC = 72, MAGE_NPC = 131, FIRST_CLICK = 155, SECOND_CLICK = 17, THIRD_CLICK = 21;
+	public static final int ATTACK_NPC = 72
+			, MAGE_NPC = 131, FIRST_CLICK = 155,
+			SECOND_CLICK = 17, THIRD_CLICK = 21, FOURTH_CLICK = 18;
 	@Override
 	public void processPacket(final Client c, int packetType, int packetSize) {
 		c.npcIndex = 0;
@@ -136,11 +138,6 @@ public class ClickNPC implements PacketType {
 					break;
 				}
 			}
-		
-			/*if(!c.getCombat().checkMagicReqs(c.spellId)) {
-				c.stopMovement();
-				break;
-			}*/
 			
 			if (c.autocasting)
 				c.autocasting = false;
@@ -246,6 +243,36 @@ public class ClickNPC implements PacketType {
 					public void stop() {
 						c.clickNpcType = 0;
 					}
+					});
+				}
+				break;
+			case FOURTH_CLICK:
+				c.npcClickIndex = c.inStream.readSignedWord();
+				c.npcType = NPCHandler.npcs[c.npcClickIndex].npcType;
+				if(c.goodDistance(NPCHandler.npcs[c.npcClickIndex].getX(), NPCHandler.npcs[c.npcClickIndex].getY(), c.getX(), c.getY(), 1)) {
+					c.turnPlayerTo(NPCHandler.npcs[c.npcClickIndex].getX(), NPCHandler.npcs[c.npcClickIndex].getY());
+					NPCHandler.npcs[c.npcClickIndex].facePlayer(c.playerId);
+					c.getActions().fourthClickNpc(c.npcType);
+				} else {
+					c.clickNpcType = 3;
+					Player.schedule(c, new Tick(4) {
+						@Override
+						public void execute() {
+							if((c.clickNpcType == 3) && NPCHandler.npcs[c.npcClickIndex] != null) {
+								if(c.goodDistance(c.getX(), c.getY(), NPCHandler.npcs[c.npcClickIndex].getX(), NPCHandler.npcs[c.npcClickIndex].getY(), 1)) {
+									c.turnPlayerTo(NPCHandler.npcs[c.npcClickIndex].getX(), NPCHandler.npcs[c.npcClickIndex].getY());
+									NPCHandler.npcs[c.npcClickIndex].facePlayer(c.playerId);
+									c.getActions().fourthClickNpc(c.npcType);
+									this.stop();
+								}
+							}
+							if(c.clickNpcType < 3)
+								this.stop();
+						}
+						@Override
+						public void stop() {
+							c.clickNpcType = 0;
+						}
 					});
 				}
 				break;

@@ -1,4 +1,4 @@
-package RS2.model.npc;
+package RS2.model.npc.handlers;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import RS2.Settings;
 import RS2.GameEngine;
+import RS2.model.npc.NPC;
+import RS2.model.npc.NPCList;
 import RS2.model.player.Client;
 import RS2.model.player.PlayerHandler;
 import RS2.util.Misc;
@@ -29,7 +31,8 @@ public class NPCHandler {
 			NpcList[i] = null;
 		}
 		loadNPCList("./Data/CFG/npc.cfg");
-		loadAutoSpawn("./Data/CFG/spawn-config.cfg");
+		NpcSpawnDefinition.loadDefinitions(this);
+		//loadAutoSpawn("./Data/CFG/spawn-config.cfg");
 	}
 
 	public void multiAttackGfx(int i, int gfx) {

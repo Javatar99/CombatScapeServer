@@ -2,6 +2,9 @@ package RS2.model.player.packets;
 
 import RS2.model.player.Client;
 import RS2.model.player.PacketType;
+import RS2.model.shop.definitions.ShopItem;
+import RS2.model.shop.definitions.ShopLoader;
+
 /**
  * Bank X Items
  **/
@@ -18,10 +21,13 @@ public class BankX1 implements PacketType {
 			c.xRemoveId = c.getInStream().readSignedWordBigEndian();
 		}
 		if (c.xInterfaceId == 3900) {
-			c.getShops().buyItem(c.xRemoveId, c.xRemoveSlot, 20);//buy 20
-			c.xRemoveSlot = 0;
-			c.xInterfaceId = 0;
-			c.xRemoveId = 0;
+			ShopItem item = ShopLoader.shops.get(c.myShopId).getShopItem(c.xRemoveId);
+			if(item != null){
+				c.getShops().buyItem(c.xRemoveId, c.xRemoveSlot, item.getOriginalStock());//Buy Max
+				c.xRemoveSlot = 0;
+				c.xInterfaceId = 0;
+				c.xRemoveId = 0;
+			}
 			return;
 		}
 

@@ -18,7 +18,7 @@ import RS2.model.player.packets.ClickObject;
 import RS2.model.player.packets.ClickingButtons;
 import RS2.model.player.packets.ClickingInGame;
 import RS2.model.player.packets.ClickingStuff;
-import RS2.model.player.packets.Commands;
+import RS2.model.player.packets.commands.Commands;
 import RS2.model.player.packets.Dialogue;
 import RS2.model.player.packets.DropItem;
 import RS2.model.player.packets.FollowPlayer;
@@ -78,6 +78,7 @@ public class PacketHandler{
 		packetId[155] = cn;
 		packetId[17] = cn;
 		packetId[21] = cn;
+		packetId[18] = cn;
 		packetId[16] = new ItemClick2();		
 		packetId[75] = new ItemClick3();	
 		packetId[122] = new ClickItem();

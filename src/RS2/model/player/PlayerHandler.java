@@ -4,7 +4,7 @@ package RS2.model.player;
 
 import RS2.Settings;
 import RS2.GameEngine;
-import RS2.model.npc.NPCHandler;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.util.Misc;
 import RS2.util.Stream;
 
@@ -77,6 +77,15 @@ public class PlayerHandler {
 		// }
 	}
 
+	public static Client getPlayerByName(String playerName){
+		for(Player p: players){
+			if(p.isActive && p.playerName.equalsIgnoreCase(playerName)){
+				return (Client)p;
+			}
+		}
+		return null;
+	}
+
 	public void process() {
 		synchronized (lock) {
 			if (kickAllPlayers) {
@@ -86,16 +95,6 @@ public class PlayerHandler {
 					}
 				}
 			}
-			/*
-			 * for (int i = 0; i < Config.MAX_PLAYERS; i++) {
-			 * if (players[i] == null || !players[i].isActive)
-			 * continue;
-			 * if (!players[i].initialized) {
-			 * players[i].initialize();
-			 * players[i].initialized = true;
-			 * }
-			 * }
-			 */
 			for (int i = 0; i < Settings.MAX_PLAYERS; i++) {
 				if (players[i] == null || !players[i].isActive || !players[i].initialized)
 					continue;

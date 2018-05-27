@@ -100,6 +100,10 @@ public class Client extends Player {
 			0, 0, 6, 6, 0, 0, 0 // 250
 	};
 
+	static {
+		PACKET_SIZES[122] = 1;
+	}
+
 	@Override
 	public void destruct() {
 		if (session == null)

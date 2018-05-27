@@ -1,7 +1,7 @@
 package RS2.model.player;
 
 import RS2.Settings;
-import RS2.model.npc.NPCHandler;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.util.Misc;
 
 @SuppressWarnings("all")
@@ -853,7 +853,7 @@ public class PlayerAssistant{
 					break;
 				}
 				if(itemId == 995) {
-					c.sendMessage("You can't alch coins");
+					c.sendMessage("You can't alch COINS");
 					break;
 				}
 				c.getItems().deleteItem(itemId, slot, 1);
@@ -873,7 +873,7 @@ public class PlayerAssistant{
 					break;
 				}
 				if(itemId == 995) {
-					c.sendMessage("You can't alch coins");
+					c.sendMessage("You can't alch COINS");
 					break;
 				}				
 				c.getItems().deleteItem(itemId, slot, 1);

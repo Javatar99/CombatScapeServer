@@ -1,5 +1,6 @@
 package RS2.model.npc;
 
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.util.Misc;
 import RS2.util.Stream;
 

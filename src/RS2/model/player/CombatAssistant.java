@@ -2,7 +2,7 @@ package RS2.model.player;
 
 import RS2.GameEngine;
 import RS2.Settings;
-import RS2.model.npc.NPCHandler;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.util.Misc;
 
 @SuppressWarnings("all")

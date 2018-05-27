@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import RS2.Settings;
 import RS2.model.player.PlayerHandler;
+import RS2.model.shop.definitions.ShopItem;
+import RS2.model.shop.definitions.ShopLoader;
 import RS2.util.Misc;
 
 /**
@@ -42,7 +44,8 @@ public class ShopHandler {
 			ShopName[i] = "";
 		}
 		TotalShops = 0;
-		loadShops("shops.cfg");
+		ShopLoader.loadShop();
+		//loadShops("shops.cfg");
 	}
 
 	public static void shophandler() {
@@ -50,43 +53,6 @@ public class ShopHandler {
 	}
 
 	public void process() {
-		boolean DidUpdate = false;
-		for (int i = 1; i <= TotalShops; i++) {
-			for (int j = 0; j < MaxShopItems; j++) {
-				if (ShopItems[i][j] > 0) {
-					if (ShopItemsDelay[i][j] >= MaxShowDelay) {
-						if (j <= ShopItemsStandard[i]
-								&& ShopItemsN[i][j] <= ShopItemsSN[i][j]) {
-							if (ShopItemsN[i][j] < ShopItemsSN[i][j]) {
-								ShopItemsN[i][j] += 1;
-								DidUpdate = true;
-								ShopItemsDelay[i][j] = 1;
-								ShopItemsDelay[i][j] = 0;
-								DidUpdate = true;
-							}
-						} else if (ShopItemsDelay[i][j] >= MaxSpecShowDelay) {
-							DiscountItem(i, j);
-							ShopItemsDelay[i][j] = 0;
-							DidUpdate = true;
-						}
-					}
-					ShopItemsDelay[i][j]++;
-				}
-			}
-			if (DidUpdate == true) {
-				for (int k = 1; k < Settings.MAX_PLAYERS; k++) {
-					if (PlayerHandler.players[k] != null) {
-						if (PlayerHandler.players[k].isShopping == true
-								&& PlayerHandler.players[k].myShopId == i) {
-							PlayerHandler.players[k].updateShop = true;
-							DidUpdate = false;
-							PlayerHandler.players[k].updateshop(i);
-						}
-					}
-				}
-				DidUpdate = false;
-			}
-		}
 	}
 
 	public void DiscountItem(int ShopID, int ArrayID) {

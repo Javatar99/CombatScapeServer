@@ -1,5 +1,7 @@
 package RS2.model.player.itemContainer;
 
+import RS2.model.player.Client;
+
 public abstract class ItemContainer {
 
     private int[] itemIds;
@@ -10,6 +12,13 @@ public abstract class ItemContainer {
         this.itemAmounts = new int[size];
     }
 
+    public void clearItems(){
+        for (int i = 0; i < this.itemIds.length; i++) {
+            this.itemIds[i] = 0;
+            this.itemAmounts[i] = 0;
+        }
+    }
+
     public int[] getItemIds() {
         return itemIds;
     }
@@ -17,4 +26,6 @@ public abstract class ItemContainer {
     public int[] getItemAmounts() {
         return itemAmounts;
     }
+
+    public abstract void resetContainer(Client c);
 }

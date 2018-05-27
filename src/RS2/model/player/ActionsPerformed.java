@@ -36,6 +36,11 @@ public class ActionsPerformed {
 		c.clickNpcType = 0;
 		c.npcClickIndex = 0;
 		switch (npcType) {
+
+			case 1784:
+				c.getShops().openShop(2);
+				break;
+
 		}
 	}
 
@@ -43,6 +48,12 @@ public class ActionsPerformed {
 		c.clickNpcType = 0;
 		c.npcClickIndex = 0;
 		switch (npcType) {
+			case 1784:// test shop
+				c.getShops().openShop(0);
+				break;
+			case 461: //Magic store owner
+				c.getShops().openShop(1);
+				break;
 		}
 	}
 
@@ -50,6 +61,19 @@ public class ActionsPerformed {
 		c.clickNpcType = 0;
 		c.npcClickIndex = 0;
 		switch (npcType) {
+			case 1784:
+				c.getShops().openShop(3);
+				break;
+		}
+	}
+
+	public void fourthClickNpc(int npcType){
+		c.clickNpcType = 0;
+		c.npcClickIndex = 0;
+		switch (npcType) {
+			case 1784:
+				c.getShops().openShop(4);
+				break;
 		}
 	}
 }

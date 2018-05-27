@@ -4,9 +4,9 @@ public class Settings {
 
 	public static final boolean SERVER_DEBUG = false;
 
-	public static final String SERVER_NAME = "Cleaned PI";
+	public static final String SERVER_NAME = "Combat Scape";
 
-	public static final String WELCOME_MESSAGE = "Welcome to RS Wiki's Cleaned PI";
+	public static final String WELCOME_MESSAGE = "Welcome to RS Wiki's Combat Scape";
 
 	public static final String FORUMS = "www.google.com/howtogofuckyourself";
 

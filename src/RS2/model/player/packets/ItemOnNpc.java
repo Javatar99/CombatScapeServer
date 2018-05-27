@@ -1,7 +1,7 @@
 package RS2.model.player.packets;
 
 import RS2.model.item.UseItem;
-import RS2.model.npc.NPCHandler;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.model.player.Client;
 import RS2.model.player.PacketType;
 
