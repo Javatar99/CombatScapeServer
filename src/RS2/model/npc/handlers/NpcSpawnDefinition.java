@@ -6,9 +6,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NpcSpawnDefinition {
+
+    public static  List<NpcSpawnDefinition> npcSpawnDefinitions = new ArrayList<>();
 
     private int npcType;
     private int x;
@@ -34,11 +37,12 @@ public class NpcSpawnDefinition {
 
     static void loadDefinitions(NPCHandler handler){
         try {
-            List<NpcSpawnDefinition> spawns
-                    = new Gson().fromJson(new FileReader("Data/cfg/npcSpawns.json"),
+            npcSpawnDefinitions = new Gson().fromJson(new FileReader("Data/cfg/npcSpawns.json"),
                     new TypeToken<List<NpcSpawnDefinition>>(){}.getType());
-            spawns.forEach(def -> handler.newNPC(def.npcType, def.x, def.y, def.heightLevel, def.walkingType, def.HP
+            npcSpawnDefinitions.forEach(def -> handler.newNPC(def.npcType, def.x, def.y, def.heightLevel, def.walkingType, def.HP
             , def.maxHit, def.attack, def.defence));
+            if(npcSpawnDefinitions == null)
+                npcSpawnDefinitions = new ArrayList<>();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

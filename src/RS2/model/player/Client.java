@@ -232,7 +232,7 @@ public class Client extends Player {
 	
 
 	@Override
-	public void update() {
+	public void updateEntities() {
 		// synchronized (this) {
 		handler.updatePlayer(this, outStream);
 		handler.updateNPC(this, outStream);

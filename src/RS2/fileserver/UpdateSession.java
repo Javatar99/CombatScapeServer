@@ -51,7 +51,7 @@ public class UpdateSession {
 	private Request request;
 
 	/**
-	 * Creates the update session.
+	 * Creates the updateEntities session.
 	 * 
 	 * @param type
 	 *            The type of session.

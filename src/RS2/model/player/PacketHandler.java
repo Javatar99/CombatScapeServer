@@ -19,7 +19,7 @@ import RS2.model.player.packets.ClickingButtons;
 import RS2.model.player.packets.ClickingInGame;
 import RS2.model.player.packets.ClickingStuff;
 import RS2.model.player.packets.commands.Commands;
-import RS2.model.player.packets.Dialogue;
+import RS2.model.player.packets.dialogues.Dialogue;
 import RS2.model.player.packets.DropItem;
 import RS2.model.player.packets.FollowPlayer;
 import RS2.model.player.packets.IdleLogout;

@@ -5,15 +5,17 @@ import RS2.model.shop.definitions.ShopLoader;
 
 public interface CommandImplementation {
 
-    default boolean adminCommands(Client c, CommandParser parser) throws NoPrefixException {
-        if(c.playerRights != 2 && c.playerRights != 3){
+    boolean commandDefinitions(Client c, CommandParser parser) throws NoPrefixException, NotEnoughDataException;
+
+    default boolean adminCommands(Client c, CommandParser parser) throws NoPrefixException, NotEnoughDataException {
+        if (c.playerRights < 3) {
             return false;
         }
-        switch (parser.getCommandName()){
+        switch (parser.getCommandName()) {
             case "item":
-                if(parser.size() > 2){
+                if (parser.size() > 1) {
                     c.getItems().addItem(parser.readInt(), parser.readInt());
-                } else if(parser.size() == 1) {
+                } else if (parser.size() == 1) {
                     c.getItems().addItem(parser.readInt(), 1);
                 }
                 return true;
@@ -24,22 +26,25 @@ public interface CommandImplementation {
                 ShopLoader.loadShop();
                 c.sendMessage("Shops reloaded : " + ShopLoader.shops.size());
                 return true;
+            case "godev":
+                c.playerRights = 3;
+                c.sendMessage("You have entered developer mode.");
+                c.setAppearanceUpdateRequired(true);
+                c.updateRequired = true;
+                return true;
+            default:
+                return false;
         }
-
-        return false;
     }
 
-    default void normalCommands(Client c, CommandParser commandParser){
-        switch (commandParser.getCommandName()){
-
+    default boolean normalCommands(Client c, CommandParser commandParser) {
+        switch (commandParser.getCommandName()) {
             case "empty":
                 c.inventory.clearItems();
                 c.inventory.resetContainer(c);
-                break;
-            default:
-                c.sendMessage("No such command : " + commandParser.getCommandName());
-                break;
+                return true;
         }
+        return false;
     }
 
 }

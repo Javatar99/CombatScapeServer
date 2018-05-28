@@ -586,7 +586,7 @@ public abstract class Player {
 
 	public abstract void initialize();
 
-	public abstract void update();
+	public abstract void updateEntities();
 
 	public int playerId = -1;
 	public String playerName = null;
@@ -887,13 +887,13 @@ public abstract class Player {
 		}
 
 		if (dir1 == -1) {
-			// don't have to update the character position, because we're just
+			// don't have to updateEntities the character position, because we're just
 			// standing
 			str.createFrameVarSizeWord(81);
 			str.initBitAccess();
 			isMoving = false;
 			if (updateRequired) {
-				// tell client there's an update block appended at the end
+				// tell client there's an updateEntities block appended at the end
 				str.writeBits(1, 1);
 				str.writeBits(2, 0);
 			} else {
@@ -1140,7 +1140,7 @@ public abstract class Player {
 					+ ((getLevelForXP(playerXP[0])) * 0.325) + ((getLevelForXP(playerXP[2])) * 0.325));
 		}
 		playerProps.writeByte(combatLevel); // combat level
-		playerProps.writeWord(0);
+		playerProps.writeByte(playerRights);
 		str.writeByteC(playerProps.currentOffset);
 		str.writeBytes(playerProps.buffer, playerProps.currentOffset, 0);
 	}
@@ -1171,7 +1171,6 @@ public abstract class Player {
 		str.writeByte(playerRights);
 		str.writeByteC(getChatTextSize());
 		str.writeBytes_reverse(getChatText(), getChatTextSize(), 0);
-
 	}
 
 	public void forcedChat(String text) {
@@ -1370,7 +1369,7 @@ public abstract class Player {
 			str.writeByte(updateMask);
 		}
 
-		// now writing the various update blocks itself - note that their order
+		// now writing the various updateEntities blocks itself - note that their order
 		// crucial
 		if (mask100update) {
 			appendMask100Update(str);

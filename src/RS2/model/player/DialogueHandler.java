@@ -17,7 +17,8 @@ public class DialogueHandler {
 	public void sendDialogues(int dialogue, int npcId) {
 		c.talkingNpc = npcId;
 		switch(dialogue) {
-	}
+
+		}
 }
 
 	/*

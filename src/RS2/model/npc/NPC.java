@@ -79,7 +79,7 @@ public class NPC {
 	}
 
 	/**
-	 * Text update
+	 * Text updateEntities
 	 **/
 
 	public void forceChat(String text) {

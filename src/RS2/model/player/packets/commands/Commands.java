@@ -4,12 +4,15 @@ import RS2.GameEngine;
 import RS2.Settings;
 import RS2.model.player.Client;
 import RS2.model.player.PacketType;
+import RS2.model.player.packets.commands.impl.DeveloperCommands;
 import RS2.util.Misc;
 
 /**
  * Commands
  **/
 public class Commands implements PacketType, CommandImplementation {
+
+    private CommandImplementation implementation = this;
 
     @Override
     public void processPacket(Client c, int packetType, int packetSize) {
@@ -29,12 +32,32 @@ public class Commands implements PacketType, CommandImplementation {
                 }
             }
         }
+
+        switch (c.playerRights) {
+            case 3:
+                implementation = new DeveloperCommands();
+                break;
+            default:
+                implementation = this;
+        }
         try {
-            if(!adminCommands(c, new CommandParser(" ", playerCommand))){
-                normalCommands(c, new CommandParser(" ", playerCommand));
+            if (!implementation.commandDefinitions(c, new CommandParser(" ", playerCommand))) {
+                c.sendMessage("No Such Command.");
             }
+        } catch (NoPrefixException | NotEnoughDataException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean commandDefinitions(Client c, CommandParser parser) {
+        try {
+            return adminCommands(c, parser) || normalCommands(c, parser);
         } catch (NoPrefixException e) {
             System.out.println(e.getMessage());
+        } catch (NotEnoughDataException notEnoughData) {
+            notEnoughData.printStackTrace();
         }
+        return false;
     }
 }

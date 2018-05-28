@@ -141,7 +141,7 @@ public class PlayerHandler {
 				if (players[i] == null || !players[i].isActive || !players[i].initialized)
 					continue;
 				try {
-					players[i].update();
+					players[i].updateEntities();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

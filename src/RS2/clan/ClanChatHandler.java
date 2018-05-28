@@ -169,20 +169,16 @@ public class ClanChatHandler {
 	}
 
 	public void playerMessageToClan(int playerId, String message, int clanId) {
-		if (clanId < 0)
-			return;
-		for (int j = 0; j < clans[clanId].members.length; j++) {
-			if (clans[clanId].members[j] <= 0)
-				continue;
-			if (PlayerHandler.players[clans[clanId].members[j]] != null) {
-				Client c = (Client) PlayerHandler.players[clans[clanId].members[j]];
-				// c.sendMessage("["+Server.playerHandler.players[playerId].playerName+"] - "
-				// + message");
-				// sendClan(String name, String message, String clan, int
-				// rights)
-				c.sendClan(PlayerHandler.players[playerId].playerName, message,
-						clans[clanId].name,
-						PlayerHandler.players[playerId].playerRights);
+		if (clanId >= 0) {
+			for (int j = 0; j < clans[clanId].members.length; j++) {
+				if (clans[clanId].members[j] <= 0)
+					continue;
+				if (PlayerHandler.players[clans[clanId].members[j]] != null) {
+					Client c = (Client) PlayerHandler.players[clans[clanId].members[j]];
+					c.sendClan(PlayerHandler.players[playerId].playerName, message,
+							clans[clanId].name,
+							PlayerHandler.players[playerId].playerRights);
+				}
 			}
 		}
 	}

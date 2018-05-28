@@ -38,21 +38,27 @@ public class CommandParser {
         return commandData[0];
     }
 
-    public int readInt() throws NoPrefixException {
+    public int readInt() throws NoPrefixException, NotEnoughDataException {
         if(splitPrefix.isEmpty())
             throw new NoPrefixException();
+        if(this.position >= commandData.length)
+            throw new NotEnoughDataException("Not Enough Data!");
         return Integer.parseInt(commandData[this.position++]);
     }
 
-    public double readDouble() throws NoPrefixException {
+    public double readDouble() throws NoPrefixException, NotEnoughDataException {
         if(splitPrefix.isEmpty())
             throw new NoPrefixException();
+        if(this.position >= commandData.length)
+            throw new NotEnoughDataException("Not Enough Data!");
         return Double.parseDouble(commandData[this.position++]);
     }
 
-    public Client getClient() throws NoPrefixException {
+    public Client getClient() throws NoPrefixException, NotEnoughDataException {
         if(splitPrefix.isEmpty())
             throw new NoPrefixException("Invalid name.");
+        if(this.position >= commandData.length)
+            throw new NotEnoughDataException("Not Enough Data!");
         return PlayerHandler.getPlayerByName(commandData[this.position++]);
     }
 

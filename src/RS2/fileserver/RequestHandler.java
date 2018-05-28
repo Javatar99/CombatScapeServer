@@ -11,7 +11,7 @@ import java.util.zip.CRC32;
 import RS2.jagcached.net.IndexedFileSystem;
 
 /**
- * Handles update requests and creates a response.
+ * Handles updateEntities requests and creates a response.
  * 
  * @author Graham Edgecombe
  * 
