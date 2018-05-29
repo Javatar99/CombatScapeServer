@@ -842,7 +842,7 @@ public class NPCHandler {
 		}
 	}
 
-	public void newNPC(int npcType, int x, int y, int heightLevel,
+	public int newNPC(int npcType, int x, int y, int heightLevel,
 			int WalkingType, int HP, int maxHit, int attack, int defence) {
 		// first, search for a free slot
 		int slot = -1;
@@ -854,7 +854,7 @@ public class NPCHandler {
 		}
 
 		if (slot == -1)
-			return; // no free slot found
+			return -1; // no free slot found
 
 		NPC newNPC = new NPC(slot, npcType);
 		newNPC.absX = x;
@@ -869,6 +869,7 @@ public class NPCHandler {
 		newNPC.attack = attack;
 		newNPC.defence = defence;
 		npcs[slot] = newNPC;
+		return slot;
 	}
 
 	public void newNPCList(int npcType, String npcName, int combat, int HP) {
@@ -896,7 +897,6 @@ public class NPCHandler {
 			if (npcs[i] == null)
 				continue;
 			npcs[i].clearUpdateFlags();
-
 		}
 
 		for (int i = 0; i < maxNPCs; i++) {

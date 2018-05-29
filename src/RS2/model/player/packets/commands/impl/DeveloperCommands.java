@@ -41,7 +41,18 @@ public class DeveloperCommands implements CommandImplementation {
             case "save":
                 NpcSpawnEditor.npcSpawnEditor.saveAllNewSpawns();
                 return true;
-
+            case "show":
+                NpcSpawnEditor.npcSpawnEditor.showNPCS();
+                return true;
+            case "despawn":
+                NpcSpawnEditor.npcSpawnEditor.deleteSpawnedNpcs();
+                return true;
+            case "debug":
+                NpcSpawnEditor.npcSpawnEditor.checkEditor();
+                return true;
+            case "help":
+                c.sendMessage("Command: addnpc npcId walkType hp attack defence");
+                return true;
         }
         return false;
     }

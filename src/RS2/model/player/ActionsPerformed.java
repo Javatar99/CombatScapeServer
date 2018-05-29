@@ -40,6 +40,9 @@ public class ActionsPerformed {
 			case 1784:
 				c.getShops().openShop(2);
 				break;
+			case 225:
+				c.getShops().openShop(5);
+				break;
 
 		}
 	}
@@ -54,6 +57,9 @@ public class ActionsPerformed {
 			case 461: //Magic store owner
 				c.getShops().openShop(1);
 				break;
+			case 225:
+				c.getShops().openShop(6);
+				break;
 		}
 	}
 
@@ -63,6 +69,9 @@ public class ActionsPerformed {
 		switch (npcType) {
 			case 1784:
 				c.getShops().openShop(3);
+				break;
+			case 225:
+				c.getShops().openShop(7);
 				break;
 		}
 	}

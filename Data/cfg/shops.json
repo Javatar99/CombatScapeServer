@@ -532,39 +532,355 @@
     ]
   },
   {
-  "shopName": "Potion Store",
-  "shopId": 4,
-  "shopType": "SELL_AND_BUY",
-  "shopItems": [
-    {
-      "itemId": 2437,
-      "originalStock": 100,
-      "currentStock": 100,
-      "price": 0
-    },
-    {
-      "itemId": 2441,
-      "originalStock": 100,
-      "currentStock": 100,
-      "price": 0
-    },
-    {
-      "itemId": 2443,
-      "originalStock": 100,
-      "currentStock": 100,
-      "price": 0
-    },
-    {
-      "itemId": 2445,
-      "originalStock": 100,
-      "currentStock": 100,
-      "price": 0
-    }, {
-      "itemId": 3041,
-      "originalStock": 100,
-      "currentStock": 100,
-      "price": 0
-    }
-  ]
-}
+    "shopName": "Potion Store",
+    "shopId": 4,
+    "shopType": "SELL_AND_BUY",
+    "shopItems": [
+      {
+        "itemId": 2437,
+        "originalStock": 100,
+        "currentStock": 100,
+        "price": 0
+      },
+      {
+        "itemId": 2441,
+        "originalStock": 100,
+        "currentStock": 100,
+        "price": 0
+      },
+      {
+        "itemId": 2443,
+        "originalStock": 100,
+        "currentStock": 100,
+        "price": 0
+      },
+      {
+        "itemId": 2445,
+        "originalStock": 100,
+        "currentStock": 100,
+        "price": 0
+      },
+      {
+        "itemId": 3041,
+        "originalStock": 100,
+        "currentStock": 100,
+        "price": 0
+      },
+      {
+        "itemId": 2435,
+        "originalStock": 100,
+        "currentStock": 100,
+        "price": 0
+      },
+      {
+        "itemId": 6686,
+        "originalStock": 100,
+        "currentStock": 100,
+        "price": 0
+      }
+    ]
+  },
+  {
+    "shopName": "Armour Store",
+    "shopId": 5,
+    "shopType": "SELL_AND_BUY",
+    "shopItems": [
+      {
+        "itemId": 1153,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1115,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1067,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1191,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1157,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1119,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1069,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1193,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1165,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1125,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1077,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1195,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1159,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1121,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1071,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1197,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1161,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1123,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1073,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1199,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1163,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1127,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1079,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1201,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 3749,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 3751,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 3753,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 3755,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 5574,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 5575,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 5576,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1093,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 3105,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 7458,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 7459,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 7460,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      }
+    ]
+  },
+  {
+    "shopName": "Jewelry Store",
+    "shopId": 6,
+    "shopType": "SELL_AND_BUY",
+    "shopItems": [
+      {
+        "itemId": 2551,
+        "originalStock": 50,
+        "currentStock": 50,
+        "price": 0
+      },
+      {
+        "itemId": 1728,
+        "originalStock": 50,
+        "currentStock": 50,
+        "price": 0
+      },
+      {
+        "itemId": 1732,
+        "originalStock": 50,
+        "currentStock": 50,
+        "price": 0
+      },
+      {
+        "itemId": 1726,
+        "originalStock": 50,
+        "currentStock": 50,
+        "price": 0
+      }
+    ]
+  },
+  {
+    "shopName": "Pure Store",
+    "shopId": 7,
+    "shopType": "SELL_AND_BUY",
+    "shopItems": [
+      {
+        "itemId": 7534,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 10000
+      },
+      {
+        "itemId": 1035,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 1033,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 4502,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 10000
+      },
+      {
+        "itemId": 544,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 542,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      },
+      {
+        "itemId": 6568,
+        "originalStock": 1,
+        "currentStock": 1,
+        "price": 0
+      }
+    ]
+  }
 ]

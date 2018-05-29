@@ -35,6 +35,42 @@ public class NpcSpawnDefinition {
         this.defence = defence;
     }
 
+    public int getNpcType() {
+        return npcType;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getHeightLevel() {
+        return heightLevel;
+    }
+
+    public int getWalkingType() {
+        return walkingType;
+    }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public int getMaxHit() {
+        return maxHit;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
     static void loadDefinitions(NPCHandler handler){
         try {
             npcSpawnDefinitions = new Gson().fromJson(new FileReader("Data/cfg/npcSpawns.json"),
@@ -46,8 +82,6 @@ public class NpcSpawnDefinition {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
-
 }
 

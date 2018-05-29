@@ -23,7 +23,7 @@ public class CommandParser {
     }
 
     public int size(){
-        return this.commandData.length;
+        return this.commandData.length - 1;
     }
 
     public CommandParser(String commandString) {

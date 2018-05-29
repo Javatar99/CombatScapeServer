@@ -1,5 +1,6 @@
 package RS2.model.player.packets.commands;
 
+import RS2.model.npc.handlers.NpcSpawnEditor;
 import RS2.model.player.Client;
 import RS2.model.shop.definitions.ShopLoader;
 
@@ -29,6 +30,7 @@ public interface CommandImplementation {
             case "godev":
                 c.playerRights = 3;
                 c.sendMessage("You have entered developer mode.");
+                NpcSpawnEditor.npcSpawnEditor.loadSpawns();
                 c.setAppearanceUpdateRequired(true);
                 c.updateRequired = true;
                 return true;

@@ -23,8 +23,7 @@ import RS2.net.PipelineFactory;
 import RS2.task.Task;
 import RS2.task.TaskScheduler;
 import RS2.util.log.Logger;
-import RS2.world.StillGraphicsManager;
- 
+
 @SuppressWarnings("all")
 public class GameEngine {
 
@@ -32,7 +31,6 @@ public class GameEngine {
 	 * Calls to manage the players on the server.
 	 */
 	public static PlayerManager playerManager = null;
-	private static StillGraphicsManager stillGraphicsManager = null;
 
 	/**
 	 * Sleep mode of the server.
@@ -146,7 +144,6 @@ public class GameEngine {
 
 		playerManager = PlayerManager.getSingleton();
 		playerManager.setupRegionPlayers();
-		stillGraphicsManager = new StillGraphicsManager();
 
 		/**
 		 * Successfully loaded the server.
@@ -179,13 +176,6 @@ public class GameEngine {
 	 */
 	public static long getSleepTimer() {
 		return sleepTime;
-	}
-
-	/**
-	 * Gets the Graphics manager.
-	 */
-	public static StillGraphicsManager getStillGraphicsManager() {
-		return stillGraphicsManager;
 	}
 
 	/**

@@ -24,13 +24,18 @@ public class ShopAssistant {
      **/
 
     public void openShop(int ShopID) {
-        c.getItems().resetItems(3823);
-        Shop shop = ShopLoader.shops.get(ShopID);
-        resetShop(shop);
-        c.isShopping = true;
-        c.myShopId = ShopID;
-        c.getPA().sendFrame248(3824, 3822);
-        c.getPA().sendFrame126(shop.getShopName(), 3901);
+        if (ShopID < ShopLoader.shops.size()) {
+            c.getItems().resetItems(3823);
+            Shop shop = ShopLoader.shops.get(ShopID);
+            resetShop(shop);
+            c.isShopping = true;
+            c.myShopId = ShopID;
+            c.getPA().sendFrame248(3824, 3822);
+            c.getPA().sendFrame126(shop.getShopName(), 3901);
+        } else {
+            c.sendMessage("Invalid Shop : " + ShopID);
+            return;
+        }
     }
 
     public void updateshop(int i) {
