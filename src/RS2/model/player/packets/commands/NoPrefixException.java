@@ -1,5 +1,9 @@
 package RS2.model.player.packets.commands;
 
+/**
+ * @author david (Javatar)
+ */
+
 public class NoPrefixException extends Exception{
 
     public NoPrefixException() {

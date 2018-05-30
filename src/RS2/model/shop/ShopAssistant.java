@@ -93,6 +93,7 @@ public class ShopAssistant {
 
         if (item != null) {
             ShopValue = item.getPrice();
+            item.setPrice((int) ShopValue);
         }
         if (ShopValue <= 0) {
             ShopValue = getItemShopValue(ItemID);
@@ -101,7 +102,6 @@ public class ShopAssistant {
         if (shop.getCurrency().getSellToPlayerModifier() > 1) {
             TotPrice *= shop.getCurrency().getSellToPlayerModifier();
         }
-        item.setPrice((int) ShopValue);
         return TotPrice;
     }
 

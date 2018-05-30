@@ -2,6 +2,10 @@ package RS2.model.player.itemContainer;
 
 import RS2.model.player.Client;
 
+/**
+ * @author david (Javatar)
+ */
+
 public abstract class ItemContainer {
 
     private int[] itemIds;

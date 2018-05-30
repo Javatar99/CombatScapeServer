@@ -39,21 +39,21 @@ public class DialogueHandler {
 	 */
 	
 	public void sendOption(String s) {
-		c.getPA().sendFrame126("Select an Option", 2470);
+		c.getPA().sendFrame126("Select an OptionAction", 2470);
 	 	c.getPA().sendFrame126(s, 2471);
 		c.getPA().sendFrame126("Click here to continue", 2473);
 		c.getPA().sendFrame164(13758);
 	}	
 	
 	public void sendOption2(String s, String s1) {
-		c.getPA().sendFrame126("Select an Option", 2460);
+		c.getPA().sendFrame126("Select an OptionAction", 2460);
 		c.getPA().sendFrame126(s, 2461);
 		c.getPA().sendFrame126(s1, 2462);
 		c.getPA().sendFrame164(2459);
 	}
 	
 	public void sendOption3(String s, String s1, String s2) {
-		c.getPA().sendFrame126("Select an Option", 2470);
+		c.getPA().sendFrame126("Select an OptionAction", 2470);
 		c.getPA().sendFrame126(s, 2471);
 		c.getPA().sendFrame126(s1, 2472);
 		c.getPA().sendFrame126(s2, 2473);
@@ -61,7 +61,7 @@ public class DialogueHandler {
 	}
 	
 	public void sendOption4(String s, String s1, String s2, String s3) {
-		c.getPA().sendFrame126("Select an Option", 2481);
+		c.getPA().sendFrame126("Select an OptionAction", 2481);
 		c.getPA().sendFrame126(s, 2482);
 		c.getPA().sendFrame126(s1, 2483);
 		c.getPA().sendFrame126(s2, 2484);
@@ -70,7 +70,7 @@ public class DialogueHandler {
 	}
 	
 	public void sendOption5(String s, String s1, String s2, String s3, String s4) {
-		c.getPA().sendFrame126("Select an Option", 2493);
+		c.getPA().sendFrame126("Select an OptionAction", 2493);
 		c.getPA().sendFrame126(s, 2494);
 		c.getPA().sendFrame126(s1, 2495);
 		c.getPA().sendFrame126(s2, 2496);

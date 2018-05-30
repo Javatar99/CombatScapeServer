@@ -5,6 +5,10 @@ import RS2.model.player.PlayerHandler;
 
 import java.util.Arrays;
 
+/**
+ * @author david (Javatar)
+ */
+
 public class CommandParser {
 
     private String splitPrefix;

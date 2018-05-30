@@ -2,7 +2,12 @@ package RS2.model.player.packets.commands;
 
 import RS2.model.npc.handlers.NpcSpawnEditor;
 import RS2.model.player.Client;
+import RS2.model.player.dialogues.OptionDialogue;
 import RS2.model.shop.definitions.ShopLoader;
+
+/**
+ * @author david (Javatar)
+ */
 
 public interface CommandImplementation {
 
@@ -27,6 +32,46 @@ public interface CommandImplementation {
                 ShopLoader.loadShop();
                 c.sendMessage("Shops reloaded : " + ShopLoader.shops.size());
                 return true;
+
+            case "tele":
+                if(parser.size() > 2){
+                    c.getPA().startTeleport2(parser.readInt(), parser.readInt(), parser.readInt());
+                } else if(parser.size() == 2){
+                    c.getPA().startTeleport2(parser.readInt(), parser.readInt(), c.heightLevel);
+                } else {
+                    c.sendMessage("tele X Y H");
+                    c.sendMessage("tele X Y");
+                }
+                return true;
+            case "dialogue":
+                OptionDialogue dialogue = new OptionDialogue(c);
+                dialogue.setOption("Test1", 0, p -> {
+                    p.sendMessage("Test 1");
+                    return true;
+                });
+                dialogue.setOption("Test2", 1, p -> {
+                    p.sendMessage("Test 2");
+                    return true;
+                });
+                dialogue.setOption("Test3", 2, p -> {
+                    p.sendMessage("Test 3");
+                    return true;
+                });
+                dialogue.setOption("Test4", 3, p -> {
+                    p.sendMessage("Test 4");
+                    return true;
+                });
+                dialogue.setOption("Next", 4, p -> {
+                    dialogue.setOption("Test 5", 0, t -> true);
+                    dialogue.setOption("Test 6", 1, t -> true);
+                    dialogue.setOption("Test 7", 2, t -> true);
+                    dialogue.setOption("Test 8", 3, t -> true);
+                    dialogue.setOption("Test 9", 4, t -> true);
+                    return false;
+                });
+                dialogue.show();
+                return true;
+
             case "godev":
                 c.playerRights = 3;
                 c.sendMessage("You have entered developer mode.");
