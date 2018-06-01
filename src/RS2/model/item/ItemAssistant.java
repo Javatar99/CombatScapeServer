@@ -1505,6 +1505,14 @@ public class ItemAssistant {
 		}
 	}
 
+	public void bankInventory(){
+		for (int i = 0; i < c.inventory.getItemIds().length; i++) {
+			if(c.inventory.getItemIds()[i] > 0){
+				this.bankItem(c.inventory.getItemIds()[i], i, c.inventory.getItemAmounts()[i]);
+			}
+		}
+	}
+
 	/**
 	 * Banking your item.
 	 * 

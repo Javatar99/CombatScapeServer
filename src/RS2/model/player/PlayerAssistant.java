@@ -1102,15 +1102,15 @@ public class PlayerAssistant {
 
     public void startTeleport(int x, int y, int height, String teleportType) {
         if (c.duelStatus == 5) {
-            c.sendMessage("You can't teleport during a duel!");
+            c.sendMessage("You can't teleportMagicTab during a duel!");
             return;
         }
         if (c.inWild() && c.wildLevel > Settings.NO_TELEPORT_WILD_LEVEL) {
-            c.sendMessage("You can't teleport above level " + Settings.NO_TELEPORT_WILD_LEVEL + " in the wilderness.");
+            c.sendMessage("You can't teleportMagicTab above level " + Settings.NO_TELEPORT_WILD_LEVEL + " in the wilderness.");
             return;
         }
         if (System.currentTimeMillis() - c.teleBlockDelay < c.teleBlockLength) {
-            c.sendMessage("You are teleblocked and can't teleport.");
+            c.sendMessage("You are teleblocked and can't teleportMagicTab.");
             return;
         }
         if (!c.isDead && c.teleTimer == 0 && c.respawnTimer == -6) {
@@ -1143,11 +1143,11 @@ public class PlayerAssistant {
 
     public void startTeleport2(int x, int y, int height) {
         if (c.duelStatus == 5) {
-            c.sendMessage("You can't teleport during a duel!");
+            c.sendMessage("You can't teleportMagicTab during a duel!");
             return;
         }
         if (System.currentTimeMillis() - c.teleBlockDelay < c.teleBlockLength) {
-            c.sendMessage("You are teleblocked and can't teleport.");
+            c.sendMessage("You are teleblocked and can't teleportMagicTab.");
             return;
         }
         if (!c.isDead && c.teleTimer == 0) {

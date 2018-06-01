@@ -4,11 +4,12 @@ import RS2.model.item.GameItem;
 import RS2.model.player.Client;
 import RS2.model.player.PacketType;
 import RS2.model.player.PlayerHandler;
+import RS2.model.player.packets.tabs.MagicTab;
 
 /**
  * Clicking most buttons
  **/
-public class ClickingButtons implements PacketType {
+public class ClickingButtons implements PacketType, MagicTab {
 
     @Override
     public void processPacket(final Client c, int packetType, int packetSize) {
@@ -22,6 +23,23 @@ public class ClickingButtons implements PacketType {
 
         switch (parentID) {
 
+            case MAGIC_TAB:
+                teleportMagicTab(c, childID);
+                break;
+
+            case 5292:
+                switch (childID) {
+                    case 102:
+                        c.getItems().bankInventory();
+                        break;
+                    case 92:
+                        c.takeAsNote = true;
+                        break;
+                    case 93:
+                        c.takeAsNote = false;
+                        break;
+                }
+                break;
             case 2449:
                 if (childID == 8) {
                     c.logout();
@@ -30,7 +48,7 @@ public class ClickingButtons implements PacketType {
 
             case 2492:
                 if (c.currentOptionDialogue != null) {
-                    if(c.currentOptionDialogue.doAction(childID)){
+                    if (c.currentOptionDialogue.doAction(childID)) {
                         c.getPA().closeAllWindows();
                     }
                 }
@@ -90,7 +108,7 @@ public class ClickingButtons implements PacketType {
                 break;
 
             case 3443:
-                if(childID == 102){
+                if (childID == 102) {
                     c.tradeAccepted = true;
                     Client ot1 = (Client) PlayerHandler.players[c.tradeWith];
                     if (ot1 == null) {
