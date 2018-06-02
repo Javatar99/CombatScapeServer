@@ -6,14 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import RS2.Settings;
+import RS2.model.item.definitions.ItemAnimationDefinition;
+import RS2.model.item.definitions.ItemDefinition;
 import RS2.model.player.Client;
 import RS2.model.player.Player;
 import RS2.model.player.PlayerHandler;
 import RS2.util.Misc;
+import com.google.gson.Gson;
 
 /**
 * Handles ground items
@@ -24,11 +28,22 @@ public class ItemHandler {
 	public List<GroundItem> items = new ArrayList<GroundItem>();
 	public static final int HIDE_TICKS = 100;
 	
-	public ItemHandler() {			
-		for(int i = 0; i < Settings.ITEM_LIMIT; i++) {
-			ItemList[i] = null;
+	public ItemHandler() {
+		Arrays.fill(itemDefinitions, null);
+		try {
+			ItemDefinition[] list = new Gson().fromJson(
+					new FileReader("Data/cfg/ItemDefinitions.json"),
+					ItemDefinition[].class
+			);
+			for(ItemDefinition def: list){
+				if (def != null) {
+					itemDefinitions[def.itemId] = def;
+				}
+			}
+			ItemAnimationDefinition.loadDefinitions();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-		loadItemList("item.cfg");
 		loadItemPrices("prices.txt");
 	}
 	
@@ -273,28 +288,28 @@ public class ItemHandler {
 	*Item List
 	**/
 	
-	public ItemList ItemList[] = new ItemList[Settings.ITEM_LIMIT];
+	public ItemDefinition itemDefinitions[] = new ItemDefinition[Settings.ITEM_LIMIT];
 	
 
 	public void newItemList(int ItemId, String ItemName, String ItemDescription, double ShopValue, double LowAlch, double HighAlch, int Bonuses[]) {
 		// first, search for a free slot
 		int slot = -1;
 		for (int i = 0; i < 11740; i++) {
-			if (ItemList[i] == null) {
+			if (itemDefinitions[i] == null) {
 				slot = i;
 				break;
 			}
 		}
 
 		if(slot == -1) return;		// no free slot found
-		ItemList newItemList = new ItemList(ItemId);
+		ItemDefinition newItemList = new ItemDefinition(ItemId);
 		newItemList.itemName = ItemName;
 		newItemList.itemDescription = ItemDescription;
 		newItemList.ShopValue = ShopValue;
 		newItemList.LowAlch = LowAlch;
 		newItemList.HighAlch = HighAlch;
 		newItemList.Bonuses = Bonuses;
-		ItemList[slot] = newItemList;
+		itemDefinitions[slot] = newItemList;
 	}
 	
 	public void loadItemPrices(String filename) {
@@ -302,7 +317,7 @@ public class ItemHandler {
 			Scanner s = new Scanner(new File("./data/cfg/" + filename));
 			while (s.hasNextLine()) {
 				String[] line = s.nextLine().split(" ");
-				ItemList temp = getItemList(Integer.parseInt(line[0]));
+				ItemDefinition temp = getItemList(Integer.parseInt(line[0]));
 				if (temp != null)
 					temp.ShopValue = Integer.parseInt(line[1]);			
 			}		
@@ -311,11 +326,11 @@ public class ItemHandler {
 		}
 	}
 	
-	public ItemList getItemList(int i) {
-		for (int j = 0; j < ItemList.length; j++) {
-			if (ItemList[j] != null) {
-				if (ItemList[j].itemId == i) {
-					return ItemList[j];				
+	public ItemDefinition getItemList(int i) {
+		for (int j = 0; j < itemDefinitions.length; j++) {
+			if (itemDefinitions[j] != null) {
+				if (itemDefinitions[j].itemId == i) {
+					return itemDefinitions[j];
 				}		
 			}		
 		}

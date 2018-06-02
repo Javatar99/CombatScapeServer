@@ -12,13 +12,14 @@ public class WearItem implements PacketType {
 
 	@Override
 	public void processPacket(Client c, int packetType, int packetSize) {
-		c.wearId = c.getInStream().readUnsignedWord();
-		c.wearSlot = c.getInStream().readUnsignedWordA();
-		c.interfaceId = c.getInStream().readUnsignedWordA();
-		
-		int oldCombatTimer = c.attackTimer;
-		if (c.playerIndex > 0 || c.npcIndex > 0)
+		int inventorySlot = c.getInStream().readUnsignedByte();
+		if(inventorySlot < 0 || inventorySlot >= c.inventory.getItemIds().length){
+			c.sendMessage("Invalid slot: " + inventorySlot);
+			return;
+		}
+		if (c.playerIndex > 0 || c.npcIndex > 0) {
 			c.getCombat().resetPlayerAttack();
-		c.getItems().wearItem(c.wearId, c.wearSlot);
+		}
+		c.getItems().wearItem(inventorySlot);
 	}
 }

@@ -1543,7 +1543,7 @@ public class PlayerAssistant {
      * reseting animation
      **/
     public void resetAnimation() {
-        c.getCombat().getPlayerAnimIndex(c.getItems().getItemName(c.equipment.getItemIds()[c.playerWeapon]).toLowerCase());
+        c.getCombat().getPlayerAnimIndex();
         c.startAnimation(c.playerStandIndex);
         requestUpdates();
     }

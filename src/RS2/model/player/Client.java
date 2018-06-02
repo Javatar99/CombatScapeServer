@@ -11,7 +11,7 @@ import RS2.util.Stream;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 
-import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.Future;
 
@@ -28,7 +28,15 @@ public class Client extends Player {
 	private ActionsPerformed actionHandler = new ActionsPerformed(this);
 	private PlayerKilling playerKilling = new PlayerKilling(this);
 	private DialogueHandler dialogueHandler = new DialogueHandler(this);
-	private Queue<Packet> queuedPackets = new LinkedList<Packet>();
+	private final Queue<Packet> queuedPackets = new PriorityQueue<>(
+			(o1, o2) -> {
+				if(o1.getOpcode() == 41 || o1.getOpcode() == 122)
+					return -1;
+				else if(o1.getOpcode() == o2.getOpcode())
+					return 0;
+				return 1;
+			}
+	);
 
 	public int lowMemoryVersion = 0;
 	public int timeOutCounter = 0;
@@ -102,6 +110,7 @@ public class Client extends Player {
 
 	static {
 		PACKET_SIZES[122] = 1;
+		PACKET_SIZES[41] = 1;
 	}
 
 	@Override
@@ -211,7 +220,7 @@ public class Client extends Player {
 		getItems().setEquipment(equipment.getItemIds()[playerFeet], 1, playerFeet);
 		getItems().setEquipment(equipment.getItemIds()[playerRing], 1, playerRing);
 		getItems().setEquipment(equipment.getItemIds()[playerWeapon], equipment.getItemAmounts()[playerWeapon], playerWeapon);
-		getCombat().getPlayerAnimIndex(getItems().getItemName(equipment.getItemIds()[playerWeapon]).toLowerCase());
+		getCombat().getPlayerAnimIndex();
 			getPA().logIntoPM();
 		getItems().addSpecialBar(equipment.getItemIds()[playerWeapon]);
 			saveTimer = Settings.SAVE_TIMER;
@@ -567,7 +576,7 @@ public class Client extends Player {
 	@Override
 	public boolean processQueuedPackets() {
 		synchronized (queuedPackets) {
-			Packet p = null;
+			Packet p;
 			while ((p = queuedPackets.poll()) != null) {
 				inStream.currentOffset = 0;
 				packetType = p.getOpcode();

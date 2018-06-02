@@ -195,18 +195,47 @@ public abstract class Player {
             AttackEventRunning = false, npcindex, spawned = false;
     public int
 
-            saveDelay, playerKilled, stotalPlayerDamageDealt, killedBy,
-            lastChatId = 1, privateChat, friendSlot = 0, dialogueId,
-            randomCoffin, newLocation, specEffect, specBarId, attackLevelReq,
-            defenceLevelReq, strengthLevelReq, rangeLevelReq, magicLevelReq,
-            followId, skullTimer, nextChat = 0, talkingNpc = -1,
-            dialogueAction = 0, autocastId, followDistance, followId2,
-            barrageCount = 0, delayedDamage = 0, delayedDamage2 = 0,
-            lastArrowUsed = -1, clanId = -1,
-            autoRet = 0, xInterfaceId = 0, xRemoveId = 0,
-            xRemoveSlot = 0, frozenBy = 0, poisonDamage = 0, teleAction = 0,
-            bonusAttack = 0, lastNpcAttacked = 0, killCount = 0, actionTimer,
-            height = 0;
+            saveDelay;
+    public int playerKilled;
+    public int stotalPlayerDamageDealt;
+    public int killedBy;
+    public int lastChatId = 1;
+    public int privateChat;
+    public int friendSlot = 0;
+    public int dialogueId;
+    public int newLocation;
+    public int specEffect;
+    public int specBarId;
+    public int attackLevelReq;
+    public int defenceLevelReq;
+    public int strengthLevelReq;
+    public int rangeLevelReq;
+    public int magicLevelReq;
+    public int followId;
+    public int skullTimer;
+    public int nextChat = 0;
+    public int talkingNpc = -1;
+    public int dialogueAction = 0;
+    public int autocastId;
+    public int followDistance;
+    public int followId2;
+    public int barrageCount = 0;
+    public int delayedDamage = 0;
+    public int delayedDamage2 = 0;
+    public int lastArrowUsed = -1;
+    public int clanId = -1;
+    public int autoRet = 0;
+    public int xInterfaceId = 0;
+    public int xRemoveId = 0;
+    public int xRemoveSlot = 0;
+    public int frozenBy = 0;
+    public int poisonDamage = 0;
+    public int teleAction = 0;
+    public int bonusAttack = 0;
+    public int lastNpcAttacked = 0;
+    public int killCount = 0;
+    public int actionTimer;
+    public int height = 0;
     public String clanName, properName;
     public int[] voidStatus = new int[5];
     public int[] itemKeptId = new int[4];
@@ -325,7 +354,7 @@ public abstract class Player {
     public int playerAppearance[] = new int[13];
     public int apset;
     public int actionID;
-    public int wearItemTimer, wearId, wearSlot, interfaceId;
+    public int wearItemTimer;
     public int XremoveSlot, XinterfaceID, XremoveID, Xamount;
     public boolean antiFirePot = false;
     public String connectedFrom = "";

@@ -1,9 +1,13 @@
 package RS2.model.player.packets.commands;
 
+import RS2.model.item.definitions.ItemAnimationDefinition;
+import RS2.model.item.definitions.ItemDefinition;
 import RS2.model.npc.handlers.NpcSpawnEditor;
 import RS2.model.player.Client;
 import RS2.model.player.dialogues.OptionDialogue;
 import RS2.model.shop.definitions.ShopLoader;
+
+import java.util.Arrays;
 
 /**
  * @author david (Javatar)
@@ -78,6 +82,36 @@ public interface CommandImplementation {
                 NpcSpawnEditor.npcSpawnEditor.loadSpawns();
                 c.setAppearanceUpdateRequired(true);
                 c.updateRequired = true;
+                return true;
+            case "master":
+                Arrays.fill(c.playerLevel, 99);
+                Arrays.fill(c.playerXP, 200000000);
+                for (int i = 0; i < c.playerLevel.length; i++) {
+                    c.getPA().refreshSkill(i);
+                }
+                return true;
+            case "unmaster":
+                Arrays.fill(c.playerLevel, 1);
+                Arrays.fill(c.playerXP, 0);
+                for (int i = 0; i < c.playerLevel.length; i++) {
+                    c.getPA().refreshSkill(i);
+                }
+                return true;
+            case "setlvl":
+                int id = parser.readInt();
+                int level = parser.readInt();
+                c.playerLevel[id] = level;
+                c.playerXP[id] = c.getPA().getXPForLevel(level) + 1;
+                c.getPA().refreshSkill(id);
+                return true;
+            case "anim":
+                c.startAnimation(parser.readInt());
+                return true;
+            case "dumpolditems":
+                ItemDefinition.convertOldToNewDefinitions(c);
+                return true;
+            case "dumpoldanim":
+                ItemAnimationDefinition.saveOldSystem(c);
                 return true;
             default:
                 return false;

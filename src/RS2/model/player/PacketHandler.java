@@ -43,7 +43,7 @@ import RS2.model.player.packets.Walking;
 public class PacketHandler{
 
 	private static PacketType packetId[] = new PacketType[256];
-	
+
 	static {
 		
 		SilentPacket u = new SilentPacket();

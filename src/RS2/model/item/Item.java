@@ -246,10 +246,10 @@ public class Item {
 	 * Gets an item name from the itemlist.
 	 */
 	public static String getItemName(int id) {
-		for (int j = 0; j < GameEngine.itemHandler.ItemList.length; j++) {
-			if (GameEngine.itemHandler.ItemList[j] != null)
-				if (GameEngine.itemHandler.ItemList[j].itemId == id)
-					return GameEngine.itemHandler.ItemList[j].itemName;
+		for (int j = 0; j < GameEngine.itemHandler.itemDefinitions.length; j++) {
+			if (GameEngine.itemHandler.itemDefinitions[j] != null)
+				if (GameEngine.itemHandler.itemDefinitions[j].itemId == id)
+					return GameEngine.itemHandler.itemDefinitions[j].itemName;
 		}
 		return null;
 	}

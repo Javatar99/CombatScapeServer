@@ -36,12 +36,12 @@ public final class TaskScheduler implements Runnable {
 	/**
 	 * A list of active tasks.
 	 */
-	private final List<Task> tasks = new ArrayList<Task>();
+	private final List<Task> tasks = new ArrayList<>();
 
 	/**
 	 * A queue of tasks that still need to be added.
 	 */
-	private final Queue<Task> newTasks = new ArrayDeque<Task>();
+	private final Queue<Task> newTasks = new ArrayDeque<>();
 
 	/**
 	 * Creates and starts the task scheduler.
@@ -65,14 +65,8 @@ public final class TaskScheduler implements Runnable {
 	 */
 	public void schedule(final Task task) {
 		if (task.isImmediate()) {
-			service.execute(new Runnable() {
-				@Override
-				public void run() {
-					task.execute();
-				}
-			});
+			service.execute(task::execute);
 		}
-
 		synchronized (newTasks) {
 			newTasks.add(task);
 		}

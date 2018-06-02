@@ -4,7 +4,6 @@ import RS2.GameEngine;
 import RS2.Settings;
 import RS2.model.item.Item;
 import RS2.model.player.Client;
-import RS2.model.player.PlayerHandler;
 import RS2.model.shop.definitions.Shop;
 import RS2.model.shop.definitions.ShopItem;
 import RS2.model.shop.definitions.ShopLoader;
@@ -107,9 +106,9 @@ public class ShopAssistant {
 
     public int getItemShopValue(int itemId) {
         for (int i = 0; i < Settings.ITEM_LIMIT; i++) {
-            if (GameEngine.itemHandler.ItemList[i] != null) {
-                if (GameEngine.itemHandler.ItemList[i].itemId == itemId) {
-                    return (int) GameEngine.itemHandler.ItemList[i].ShopValue;
+            if (GameEngine.itemHandler.itemDefinitions[i] != null) {
+                if (GameEngine.itemHandler.itemDefinitions[i].itemId == itemId) {
+                    return (int) GameEngine.itemHandler.itemDefinitions[i].ShopValue;
                 }
             }
         }
