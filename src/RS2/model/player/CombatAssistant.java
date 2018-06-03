@@ -2278,24 +2278,6 @@ public class CombatAssistant {
         }
         if (c.playerIndex == c.playerId)
             return false;
-        if (PlayerHandler.players[c.playerIndex].inDuelArena()
-                && c.duelStatus != 5 && !c.usingMagic) {
-            if (c.arenas() || c.duelStatus == 5) {
-                c.sendMessage("You can't challenge inside the arena!");
-                return false;
-            }
-            c.getTradeAndDuel().requestDuel(c.playerIndex);
-            return false;
-        }
-        if (c.duelStatus == 5
-                && PlayerHandler.players[c.playerIndex].duelStatus == 5) {
-            if (PlayerHandler.players[c.playerIndex].duelingWith == c.getId()) {
-                return true;
-            } else {
-                c.sendMessage("This isn't your opponent!");
-                return false;
-            }
-        }
         if (!PlayerHandler.players[c.playerIndex].inWild()) {
             c.sendMessage("That player is not in the wilderness.");
             c.stopMovement();
@@ -2718,12 +2700,13 @@ public class CombatAssistant {
         c.playerTurn90CWIndex = 0x335;
         c.playerTurn90CCWIndex = 0x336;
         c.playerRunIndex = 0x338;
-        c.sendMessage("ItemID: " + itemId);
-        ItemAnimationDefinition def = ItemAnimationDefinition.animationDefinitions[itemId];
-        if(def != null){
-            c.playerStandIndex = def.getStandAnimation();
-            c.playerWalkIndex = def.getWalkAnimation();
-            c.playerRunIndex = def.getRunAnimation();
+        if (itemId > 0) {
+            ItemAnimationDefinition def = ItemAnimationDefinition.animationDefinitions[itemId];
+            if(def != null){
+                c.playerStandIndex = def.getStandAnimation();
+                c.playerWalkIndex = def.getWalkAnimation();
+                c.playerRunIndex = def.getRunAnimation();
+            }
         }
     }
     public int getAttackAnimation(final int itemId){

@@ -19,19 +19,6 @@ public class ClickingStuff implements PacketType {
 				c.getTradeAndDuel().declineTrade();
 			}
 		}
-
-		Client o = (Client) PlayerHandler.players[c.duelingWith];
-		if(o != null) {
-			if(c.duelStatus >= 1 && c.duelStatus <= 4) {
-				c.getTradeAndDuel().declineDuel();
-				o.getTradeAndDuel().declineDuel();
-			}
-		}
-		
-		if(c.duelStatus == 6) {
-			c.getTradeAndDuel().claimStakedItems();		
-		}
-	
 	}
 		
 }

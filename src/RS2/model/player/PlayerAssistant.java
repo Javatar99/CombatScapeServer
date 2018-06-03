@@ -417,7 +417,7 @@ public class PlayerAssistant {
         if (c.getOutStream() != null && c != null) {
             c.getOutStream().createFrame(219);
             c.flushOutStream();
-            if(c.currentOptionDialogue != null){
+            if (c.currentOptionDialogue != null) {
                 c.currentOptionDialogue = null;
             }
         }
@@ -1024,26 +1024,10 @@ public class PlayerAssistant {
             c.playerLevel[i] = getLevelForXP(c.playerXP[i]);
             c.getPA().refreshSkill(i);
         }
-        if (c.duelStatus <= 4) { // if we are not in a duel repawn to wildy
-            movePlayer(Settings.RESPAWN_X, Settings.RESPAWN_Y, 0);
-            c.isSkulled = false;
-            c.skullTimer = 0;
-            c.attackedPlayers.clear();
-        } else { // we are in a duel, respawn outside of arena
-            Client o = (Client) PlayerHandler.players[c.duelingWith];
-            if (o != null) {
-                o.getPA().createPlayerHints(10, -1);
-                if (o.duelStatus == 6) {
-                    o.getTradeAndDuel().duelVictory();
-                }
-            }
-            c.getPA().movePlayer(Settings.DUELING_RESPAWN_X + (Misc.random(Settings.RANDOM_DUELING_RESPAWN)), Settings.DUELING_RESPAWN_Y + (Misc.random(Settings.RANDOM_DUELING_RESPAWN)), 0);
-            o.getPA().movePlayer(Settings.DUELING_RESPAWN_X + (Misc.random(Settings.RANDOM_DUELING_RESPAWN)), Settings.DUELING_RESPAWN_Y + (Misc.random(Settings.RANDOM_DUELING_RESPAWN)), 0);
-            if (c.duelStatus != 6) { // if we have won but have died, don't reset the duel status.
-                c.getTradeAndDuel().resetDuel();
-            }
-        }
-        //PlayerSaving.getSingleton().requestSave(c.playerId);
+        movePlayer(Settings.RESPAWN_X, Settings.RESPAWN_Y, 0);
+        c.isSkulled = false;
+        c.skullTimer = 0;
+        c.attackedPlayers.clear();
         PlayerSave.saveGame(c);
         c.getCombat().resetPlayerAttack();
         resetAnimation();

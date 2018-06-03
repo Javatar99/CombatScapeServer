@@ -57,14 +57,6 @@ public class Walking implements PacketType {
 			c.mageAllowed = true;
 		}
 		
-		if((c.duelStatus >= 1 && c.duelStatus <= 4) || c.duelStatus == 6) {
-			if(c.duelStatus == 6) {
-				c.getTradeAndDuel().claimStakedItems();		
-			}
-			return;
-		}
-		
-		
 		if(c.respawnTimer > 3) {
 			return;
 		}

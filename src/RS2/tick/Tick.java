@@ -36,22 +36,6 @@ public abstract class Tick {
 	}
 
 	/**
-	 * Checks if the task is running.
-	 * @return {@code true} if so, {@code false} if not.
-	 */
-	public boolean isRunning() {
-		return running;
-	}
-
-	/**
-	 * Checks if the task is stopped.
-	 * @return {@code true} if so, {@code false} if not.
-	 */
-	public boolean isStopped() {
-		return !running;
-	}
-
-	/**
 	 * This method should be called by the scheduling class every cycle. It
 	 * updates the {@link #countdown} and calls the {@link #execute()} method
 	 * if necessary.
@@ -65,46 +49,22 @@ public abstract class Tick {
 		return running;
 	}
 
-	public int getCountdown() {
-		return countdown;
-	}
-	
 	/**
 	 * Performs this task's action.
 	 */
 	protected abstract void execute();
 
 	/**
-	 * Changes the delay of this task.
-	 * @param delay The number of cycles between consecutive executions of this
-	 * task.
-	 * @throws IllegalArgumentException if the {@code delay} is not positive.
-	 */
-	public void setDelay(int delay) {
-		checkDelay(delay);
-		delay = 0;
-	}
-
-	/**
 	 * Stops this task.
 	 * @throws IllegalStateException if the task has already been stopped.
 	 */
-	public void stop() {
+	protected final void stop() {
 		if(!checkStopped())
 			return;
 		running = false;
 		onStop();
 	}
 
-	/**
-	 * Stops this task. Does not run the onStop method.
-	 * @throws IllegalStateException if the task has already been stopped.
-	 */
-	public void forceStop() {
-		checkStopped();
-		running = false;
-	}
-	
 	/**
 	 * Override this method for code which should be run when the task stops.
 	 */

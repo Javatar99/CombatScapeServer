@@ -44,12 +44,6 @@ public class BankAll implements PacketType {
                     } else {
                         c.getTradeAndDuel().tradeItem(removeId, removeSlot, 28);
                     }
-                } else {
-                    if (Item.itemStackable[removeId] || Item.itemIsNote[removeId]) {
-                        c.getTradeAndDuel().stakeItem(removeId, removeSlot, c.inventory.getItemAmounts()[removeSlot]);
-                    } else {
-                        c.getTradeAndDuel().stakeItem(removeId, removeSlot, 28);
-                    }
                 }
                 break;
 
@@ -80,20 +74,6 @@ public class BankAll implements PacketType {
                     c.getItems().resetItems(7423);
                 }
                 break;
-
-            case 6669:
-                if (Item.itemStackable[removeId] || Item.itemIsNote[removeId]) {
-                    for (GameItem item : c.getTradeAndDuel().stakedItems) {
-                        if (item.id == removeId) {
-                            c.getTradeAndDuel().fromDuel(removeId, removeSlot, c.getTradeAndDuel().stakedItems.get(removeSlot).amount);
-                        }
-                    }
-
-                } else {
-                    c.getTradeAndDuel().fromDuel(removeId, removeSlot, 28);
-                }
-                break;
-
         }
     }
 

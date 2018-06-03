@@ -1,7 +1,9 @@
 package RS2.model.player.packets.commands;
 
+import RS2.GameEngine;
 import RS2.model.item.definitions.ItemAnimationDefinition;
 import RS2.model.item.definitions.ItemDefinition;
+import RS2.model.npc.handlers.NPCHandler;
 import RS2.model.npc.handlers.NpcSpawnEditor;
 import RS2.model.player.Client;
 import RS2.model.player.dialogues.OptionDialogue;
@@ -35,6 +37,10 @@ public interface CommandImplementation {
             case "reloadshops":
                 ShopLoader.loadShop();
                 c.sendMessage("Shops reloaded : " + ShopLoader.shops.size());
+                return true;
+            case "reloadnpcs":
+                GameEngine.npcHandler = new NPCHandler();
+                c.sendMessage("Reloaded Npcs.");
                 return true;
 
             case "tele":

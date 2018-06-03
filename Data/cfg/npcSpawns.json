@@ -31,5 +31,27 @@
     "maxHit": 0,
     "attack": 0,
     "defence": 0
+  },
+  {
+    "npcType": 309,
+    "x": 3021,
+    "y": 3383,
+    "heightLevel": 0,
+    "walkingType": 0,
+    "HP": 0,
+    "maxHit": 0,
+    "attack": 0,
+    "defence": 0
+  },
+  {
+    "npcType": 311,
+    "x": 3018,
+    "y": 3383,
+    "heightLevel": 0,
+    "walkingType": 0,
+    "HP": 0,
+    "maxHit": 0,
+    "attack": 0,
+    "defence": 0
   }
 ]

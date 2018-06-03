@@ -8,7 +8,6 @@ import RS2.model.player.packets.Bank5;
 import RS2.model.player.packets.BankAll;
 import RS2.model.player.packets.BankX1;
 import RS2.model.player.packets.BankX2;
-import RS2.model.player.packets.ChallengePlayer;
 import RS2.model.player.packets.ChangeAppearance;
 import RS2.model.player.packets.ChangeRegions;
 import RS2.model.player.packets.Chat;
@@ -96,7 +95,6 @@ public class PacketHandler{
 		AttackPlayer ap = new AttackPlayer();
 		packetId[73] = ap;
 		packetId[249] = ap;
-		packetId[128] = new ChallengePlayer();
 		packetId[139] = new Trade();
 		packetId[39] = new FollowPlayer();
 		packetId[41] = new WearItem();
