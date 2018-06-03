@@ -46,11 +46,6 @@ public class ItemDefinition {
 				c.getItems().getRequirements(def.itemName, def.itemId);
 				def.targetSlot = Item.targetSlots[def.itemId];
 				Arrays.fill(def.levelRequirements, 0);
-				def.levelRequirements[c.playerAttack] = c.attackLevelReq;
-				def.levelRequirements[c.playerMagic] = c.magicLevelReq;
-				def.levelRequirements[c.playerDefence] = c.defenceLevelReq;
-				def.levelRequirements[c.playerStrength] = c.strengthLevelReq;
-				def.levelRequirements[c.playerRanged] = c.rangeLevelReq;
 
 				if(def.LowAlch <= 0){
 					def.LowAlch = def.ShopValue * 0.25;

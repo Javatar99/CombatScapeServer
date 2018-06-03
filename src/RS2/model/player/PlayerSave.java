@@ -101,9 +101,9 @@ public class PlayerSave {
 					break;
 				case 5:
 					if (token.equals("character-skill")) {
-						p.playerLevel[Integer.parseInt(token3[0])] = Integer
+                        p.playerSkills1.getPlayerLevel()[Integer.parseInt(token3[0])] = Integer
 								.parseInt(token3[1]);
-						p.playerXP[Integer.parseInt(token3[0])] = Integer
+                        p.playerSkills1.getPlayerXP()[Integer.parseInt(token3[0])] = Integer
 								.parseInt(token3[2]);
 					}
 					break;
@@ -297,16 +297,16 @@ public class PlayerSave {
 			/* SKILLS */
 			characterfile.write("[SKILLS]", 0, 8);
 			characterfile.newLine();
-			for (int i = 0; i < p.playerLevel.length; i++) {
+			for (int i = 0; i < p.playerSkills1.getPlayerLevel().length; i++) {
 				characterfile.write("character-skill = ", 0, 18);
 				characterfile.write(Integer.toString(i), 0, Integer.toString(i)
 						.length());
 				characterfile.write("	", 0, 1);
-				characterfile.write(Integer.toString(p.playerLevel[i]), 0,
-						Integer.toString(p.playerLevel[i]).length());
+				characterfile.write(Integer.toString(p.playerSkills1.getPlayerLevel()[i]), 0,
+						Integer.toString(p.playerSkills1.getPlayerLevel()[i]).length());
 				characterfile.write("	", 0, 1);
-				characterfile.write(Integer.toString(p.playerXP[i]), 0, Integer
-						.toString(p.playerXP[i]).length());
+				characterfile.write(Integer.toString(p.playerSkills1.getPlayerXP()[i]), 0, Integer
+						.toString(p.playerSkills1.getPlayerXP()[i]).length());
 				characterfile.newLine();
 			}
 			characterfile.newLine();

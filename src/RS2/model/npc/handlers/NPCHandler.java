@@ -1934,8 +1934,8 @@ public class NPCHandler {
 					if (c.prayerActive[18]) { // protect from melee
 						damage = 0;
 					}
-					if (c.playerLevel[3] - damage < 0) {
-						damage = c.playerLevel[3];
+					if (c.playerSkills1.getPlayerLevel()[3] - damage < 0) {
+						damage = c.playerSkills1.getPlayerLevel()[3];
 					}
 				}
 
@@ -1948,8 +1948,8 @@ public class NPCHandler {
 					if (c.prayerActive[17]) { // protect from range
 						damage = 0;
 					}
-					if (c.playerLevel[3] - damage < 0) {
-						damage = c.playerLevel[3];
+					if (c.playerSkills1.getPlayerLevel()[3] - damage < 0) {
+						damage = c.playerSkills1.getPlayerLevel()[3];
 					}
 				}
 
@@ -1965,8 +1965,8 @@ public class NPCHandler {
 						damage = 0;
 						magicFailed = true;
 					}
-					if (c.playerLevel[3] - damage < 0) {
-						damage = c.playerLevel[3];
+					if (c.playerSkills1.getPlayerLevel()[3] - damage < 0) {
+						damage = c.playerSkills1.getPlayerLevel()[3];
 					}
 					if (npcs[i].endGfx > 0
 							&& (!magicFailed || isFightCaveNpc(i))) {
@@ -1985,15 +1985,15 @@ public class NPCHandler {
 						damage = Misc.random(20);
 					else if (anti == 2)
 						damage = Misc.random(5);
-					if (c.playerLevel[3] - damage < 0)
-						damage = c.playerLevel[3];
+					if (c.playerSkills1.getPlayerLevel()[3] - damage < 0)
+						damage = c.playerSkills1.getPlayerLevel()[3];
 					c.gfx100(npcs[i].endGfx);
 				}
 				handleSpecialEffects(c, i, damage);
 				c.logoutDelay = System.currentTimeMillis(); // logout delay
 				// c.setHitDiff(damage);
 				c.handleHitMask(damage);
-				c.playerLevel[3] -= damage;
+                c.playerSkills1.getPlayerLevel()[3] -= damage;
 				c.getPA().refreshSkill(3);
 				c.updateRequired = true;
 				// c.setHitUpdateRequired(true);
@@ -2005,8 +2005,8 @@ public class NPCHandler {
 		if (npcs[i].npcType == 2892 || npcs[i].npcType == 2894) {
 			if (damage > 0) {
 				if (c != null) {
-					if (c.playerLevel[5] > 0) {
-						c.playerLevel[5]--;
+					if (c.playerSkills1.getPlayerLevel()[5] > 0) {
+                        c.playerSkills1.getPlayerLevel()[5]--;
 						c.getPA().refreshSkill(5);
 						c.getPA().appendPoison(12);
 					}

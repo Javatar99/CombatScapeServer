@@ -4,6 +4,7 @@ import RS2.GameEngine;
 import RS2.Settings;
 import RS2.model.item.ItemAssistant;
 import RS2.model.shop.ShopAssistant;
+import RS2.model.skilling.skills.Skill;
 import RS2.net.Packet;
 import RS2.net.Packet.Type;
 import RS2.util.Misc;
@@ -13,7 +14,6 @@ import org.jboss.netty.channel.Channel;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.concurrent.Future;
 
 public class Client extends Player {
 
@@ -155,8 +155,12 @@ public class Client extends Player {
             }
         }
         for (int i = 0; i < 25; i++) {
-            getPA().setSkillLevel(i, playerLevel[i], playerXP[i]);
+            getPA().setSkillLevel(i, playerSkills1.getPlayerLevel()[i], playerSkills1.getPlayerXP()[i]);
             getPA().refreshSkill(i);
+        }
+        for (Skill s: playerSkills){
+            getPA().setSkillLevel(s.getId(), s.getCurrentLevel(), s.getExperience());
+            getPA().refreshSkill(s.getId());
         }
         for (int p = 0; p < PRAYER.length; p++) { // reset prayer glows
             prayerActive[p] = false;
@@ -278,18 +282,18 @@ public class Client extends Player {
 
         if (System.currentTimeMillis() - restoreStatsDelay > 60000) {
             restoreStatsDelay = System.currentTimeMillis();
-            for (int level = 0; level < playerLevel.length; level++) {
-                if (playerLevel[level] < getLevelForXP(playerXP[level])) {
+            for (int level = 0; level < playerSkills1.getPlayerLevel().length; level++) {
+                if (playerSkills1.getPlayerLevel()[level] < getLevelForXP(playerSkills1.getPlayerXP()[level])) {
                     if (level != 5) { // prayer doesn't restore
-                        playerLevel[level] += 1;
-                        getPA().setSkillLevel(level, playerLevel[level],
-                                playerXP[level]);
+                        playerSkills1.getPlayerLevel()[level] += 1;
+                        getPA().setSkillLevel(level, playerSkills1.getPlayerLevel()[level],
+                                playerSkills1.getPlayerXP()[level]);
                         getPA().refreshSkill(level);
                     }
-                } else if (playerLevel[level] > getLevelForXP(playerXP[level])) {
-                    playerLevel[level] -= 1;
-                    getPA().setSkillLevel(level, playerLevel[level],
-                            playerXP[level]);
+                } else if (playerSkills1.getPlayerLevel()[level] > getLevelForXP(playerSkills1.getPlayerXP()[level])) {
+                    playerSkills1.getPlayerLevel()[level] -= 1;
+                    getPA().setSkillLevel(level, playerSkills1.getPlayerLevel()[level],
+                            playerSkills1.getPlayerXP()[level]);
                     getPA().refreshSkill(level);
                 }
             }

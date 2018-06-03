@@ -90,24 +90,24 @@ public interface CommandImplementation {
                 c.updateRequired = true;
                 return true;
             case "master":
-                Arrays.fill(c.playerLevel, 99);
-                Arrays.fill(c.playerXP, 200000000);
-                for (int i = 0; i < c.playerLevel.length; i++) {
+                Arrays.fill(c.playerSkills1.getPlayerLevel(), 99);
+                Arrays.fill(c.playerSkills1.getPlayerXP(), 200000000);
+                for (int i = 0; i < c.playerSkills1.getPlayerLevel().length; i++) {
                     c.getPA().refreshSkill(i);
                 }
                 return true;
             case "unmaster":
-                Arrays.fill(c.playerLevel, 1);
-                Arrays.fill(c.playerXP, 0);
-                for (int i = 0; i < c.playerLevel.length; i++) {
+                Arrays.fill(c.playerSkills1.getPlayerLevel(), 1);
+                Arrays.fill(c.playerSkills1.getPlayerXP(), 0);
+                for (int i = 0; i < c.playerSkills1.getPlayerLevel().length; i++) {
                     c.getPA().refreshSkill(i);
                 }
                 return true;
             case "setlvl":
                 int id = parser.readInt();
                 int level = parser.readInt();
-                c.playerLevel[id] = level;
-                c.playerXP[id] = c.getPA().getXPForLevel(level) + 1;
+                c.playerSkills1.getPlayerLevel()[id] = level;
+                c.playerSkills1.getPlayerXP()[id] = c.getPA().getXPForLevel(level) + 1;
                 c.getPA().refreshSkill(id);
                 return true;
             case "anim":
