@@ -2,9 +2,13 @@ package RS2.model.skilling.skills.impl;
 
 import RS2.model.player.Player;
 import RS2.model.skilling.skills.Skill;
+import RS2.model.skilling.skills.SkillCollection;
 
 public class Fishing extends Skill {
 
+    public Fishing() {
+        super(SkillCollection.PLAYER_FISHING);
+    }
 
     @Override
     public void onMaxExperience(Player player) {

@@ -8,7 +8,7 @@ import RS2.util.Misc;
 public class CombatSkill extends Skill {
 
     public CombatSkill(final int id) {
-        this.id = id;
+        super(id);
     }
 
     @Override

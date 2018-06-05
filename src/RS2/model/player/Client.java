@@ -158,10 +158,6 @@ public class Client extends Player {
             getPA().setSkillLevel(i, playerSkills1.getPlayerLevel()[i], playerSkills1.getPlayerXP()[i]);
             getPA().refreshSkill(i);
         }
-        for (Skill s: playerSkills){
-            getPA().setSkillLevel(s.getId(), s.getCurrentLevel(), s.getExperience());
-            getPA().refreshSkill(s.getId());
-        }
         for (int p = 0; p < PRAYER.length; p++) { // reset prayer glows
             prayerActive[p] = false;
             getPA().sendFrame36(PRAYER_GLOW[p], 0);

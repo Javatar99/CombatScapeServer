@@ -17,6 +17,7 @@ import RS2.util.Misc;
 import RS2.util.Stream;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @SuppressWarnings("all")
 public abstract class Player {
@@ -32,6 +33,7 @@ public abstract class Player {
     public final Inventory inventory = new Inventory();
     public final Bank bank = new Bank();
     public final Equipment equipment = new Equipment();
+    public final SkillCollection skills = new SkillCollection(this);
     public final int[] BOWS = {9185, 839, 845, 847, 851, 855, 859, 841, 843,
             849, 853, 857, 861, 4212, 4214, 4215, 11235, 4216, 4217, 4218,
             4219, 4220, 4221, 4222, 4223, 6724, 4734, 4934, 4935, 4936, 4937};
@@ -387,7 +389,6 @@ public abstract class Player {
     public int playerFeet = 10;
     public int playerRing = 12;
     public int playerArrows = 13;
-    public SkillCollection playerSkills;
     public Player playerList[] = new Player[maxPlayerListSize];
     public int playerListSize = 0;
     public byte playerInListBitmap[] = new byte[(Settings.MAX_PLAYERS + 7) >> 3];
@@ -478,8 +479,6 @@ public abstract class Player {
         for (int i = 0; i < Settings.BANK_SIZE; i++) {
             bank.getItemAmounts()[i] = 0;
         }
-
-        this.playerSkills = new SkillCollection(this);
 
         playerAppearance[0] = 0; // gender
         playerAppearance[1] = 7; // head
@@ -726,8 +725,7 @@ public abstract class Player {
 
     void destruct() {
         playerListSize = 0;
-        for (int i = 0; i < maxPlayerListSize; i++)
-            playerList[i] = null;
+        Arrays.fill(playerList, null);
         absX = absY = -1;
         mapRegionX = mapRegionY = -1;
         currentX = currentY = 0;
@@ -742,19 +740,19 @@ public abstract class Player {
     }
 
     public boolean withinDistance(NPC npc) {
-        if (heightLevel != npc.heightLevel)
-            return false;
-        if (npc.needRespawn == true)
-            return false;
-        int deltaX = npc.absX - absX, deltaY = npc.absY - absY;
-        return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
+        if (heightLevel == npc.heightLevel && npc.needRespawn != true) {
+            int deltaX = npc.absX - absX, deltaY = npc.absY - absY;
+            return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
+        }
+        return false;
     }
 
     public boolean withinDistance(int absX, int getY, int getHeightLevel) {
-        if (this.getHeightLevel() != getHeightLevel)
-            return false;
-        int deltaX = this.getX() - absX, deltaY = this.getY() - getY;
-        return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
+        if (this.getHeightLevel() == getHeightLevel) {
+            int deltaX = this.getX() - absX, deltaY = this.getY() - getY;
+            return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
+        }
+        return false;
     }
 
     public int getHeightLevel() {
@@ -768,7 +766,6 @@ public abstract class Player {
 
     public void resetWalkingQueue() {
         wQueueReadPtr = wQueueWritePtr = 0;
-
         for (int i = 0; i < walkingQueueSize; i++) {
             walkingQueueX[i] = currentX;
             walkingQueueY[i] = currentY;

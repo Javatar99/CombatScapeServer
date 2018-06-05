@@ -1,15 +1,16 @@
 package RS2.model.skilling.skills;
 
 import RS2.model.player.Player;
-import RS2.model.skilling.skills.impl.combat.CombatSkill;
+import RS2.model.skilling.skills.impl.EmptySkill;
 import RS2.model.skilling.skills.impl.Fishing;
+import RS2.model.skilling.skills.impl.combat.CombatSkill;
 import RS2.model.skilling.skills.impl.combat.Magic;
 import RS2.model.skilling.skills.impl.combat.Prayer;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public final class SkillCollection implements Iterable<Skill> {
 
@@ -37,11 +38,13 @@ public final class SkillCollection implements Iterable<Skill> {
 
     private Player player;
     private Skill[] skills;
+    private Prayer prayerRef;
+    private Magic magicRef;
 
     public SkillCollection(Player c) {
         this.player = c;
         this.skills = new Skill[25];
-        Arrays.fill(this.skills, null);
+        Arrays.fill(this.skills, EmptySkill.EMPTY_SKILL);
         setCombatSkills();
         this.skills[PLAYER_FISHING] = new Fishing();
     }
@@ -52,38 +55,56 @@ public final class SkillCollection implements Iterable<Skill> {
         this.skills[PLAYER_STRENGTH] = new CombatSkill(PLAYER_STRENGTH);
         this.skills[PLAYER_HITPOINTS] = new CombatSkill(PLAYER_HITPOINTS);
         this.skills[PLAYER_RANGED] = new CombatSkill(PLAYER_RANGED);
-        this.skills[PLAYER_PRAYER] = new Prayer();
-        this.skills[PLAYER_MAGIC] = new Magic();
+        this.skills[PLAYER_PRAYER] = prayerRef = new Prayer();
+        this.skills[PLAYER_MAGIC] = magicRef = new Magic();
     }
 
-    public void refreshSkill(final int id){
-        if(this.skills[id] != null){
-            this.skills[id].updateSkill(this.player);
+    public void refreshSkill(final int id) {
+        this.skills[id].updateSkill(this.player);
+    }
+
+    public void addExperience(final int id, final int experience) {
+        this.skills[id].addExperience(this.player, experience);
+    }
+
+    public void masterAllSkills() {
+        for (Skill s : skills) {
+            s.forceMaximumLevel();
+            s.updateSkill(this.player);
         }
     }
 
-    public void addExperience(final int id, final int experience){
-        if(this.skills[id] != null)
-            this.skills[id].addExperience(this.player, experience);
-    }
-
-    public void masterAllSkills(){
-        for(Skill s: skills){
-            if(s != null) {
-                s.forceMaximumLevel();
-                s.updateSkill(this.player);
-            }
-        }
-    }
-
-    public Skill getSkill(final int id){
+    public Skill getSkill(final int id) {
         return this.skills[id];
+    }
+
+    public final Stream<Skill> stream() {
+        return StreamSupport.stream(this.spliterator(), false);
+    }
+
+    public void addHitpoints(final int adding) {
+        this.skills[PLAYER_HITPOINTS].currentLevel += adding;
+        this.skills[PLAYER_HITPOINTS].updateSkill(this.player);
+    }
+
+    public void addPrayerPoints(final int adding) {
+        this.prayerRef.currentLevel += adding;
+        this.prayerRef.updateSkill(this.player);
+    }
+
+    public final Prayer getPrayer() {
+        return this.prayerRef;
+    }
+
+    public final Magic getMagic() {
+        return this.magicRef;
     }
 
     @Override
     public Iterator<Skill> iterator() {
         return new Iterator<>() {
             private int pos = 0;
+
             @Override
             public boolean hasNext() {
                 return pos < SkillCollection.this.skills.length;

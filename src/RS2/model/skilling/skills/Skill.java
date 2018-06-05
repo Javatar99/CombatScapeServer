@@ -3,6 +3,7 @@ package RS2.model.skilling.skills;
 import RS2.model.player.Client;
 import RS2.model.player.Player;
 import RS2.model.skilling.AbstractSkill;
+import RS2.model.skilling.skills.impl.EmptySkill;
 
 public abstract class Skill implements AbstractSkill {
 
@@ -11,6 +12,10 @@ public abstract class Skill implements AbstractSkill {
     protected int actualLevel;
     protected int maximumLevel;
     protected int experience;
+
+    public Skill(int id) {
+        this.id = id;
+    }
 
     @Override
     public void addExperience(Player player, int experience) {
@@ -35,7 +40,9 @@ public abstract class Skill implements AbstractSkill {
     }
 
     public final void updateSkill(Player player){
-        ((Client)player).getPA().refreshSkill(this.id);
+        if (this != EmptySkill.EMPTY_SKILL) {
+            ((Client) player).getPA().refreshSkill(this.id);
+        }
     }
 
     public final void forceMaximumLevel(){
