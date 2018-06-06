@@ -8,6 +8,7 @@ import RS2.model.npc.handlers.NpcSpawnEditor;
 import RS2.model.player.Client;
 import RS2.model.player.dialogues.OptionDialogue;
 import RS2.model.shop.definitions.ShopLoader;
+import RS2.model.skilling.skills.Skill;
 
 import java.util.Arrays;
 
@@ -90,25 +91,21 @@ public interface CommandImplementation {
                 c.updateRequired = true;
                 return true;
             case "master":
-                Arrays.fill(c.playerSkills1.getPlayerLevel(), 99);
-                Arrays.fill(c.playerSkills1.getPlayerXP(), 200000000);
-                for (int i = 0; i < c.playerSkills1.getPlayerLevel().length; i++) {
-                    c.getPA().refreshSkill(i);
-                }
+                c.skills.masterAllSkills();
                 return true;
             case "unmaster":
-                Arrays.fill(c.playerSkills1.getPlayerLevel(), 1);
-                Arrays.fill(c.playerSkills1.getPlayerXP(), 0);
-                for (int i = 0; i < c.playerSkills1.getPlayerLevel().length; i++) {
-                    c.getPA().refreshSkill(i);
-                }
+                c.skills.forEach(Skill::reset);
+                return true;
+            case "addxp":
+                final int id = parser.readInt();
+                Skill s = c.skills.getSkill(id);
+                s.addExperience(c, parser.readInt());
+                s.updateSkill(c);
                 return true;
             case "setlvl":
-                int id = parser.readInt();
-                int level = parser.readInt();
-                c.playerSkills1.getPlayerLevel()[id] = level;
-                c.playerSkills1.getPlayerXP()[id] = c.getPA().getXPForLevel(level) + 1;
-                c.getPA().refreshSkill(id);
+                final int skillId = parser.readInt();
+                c.skills.getSkill(skillId).set(parser.readInt());
+                c.skills.getSkill(skillId).updateSkill(c);
                 return true;
             case "anim":
                 c.startAnimation(parser.readInt());

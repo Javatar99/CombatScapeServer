@@ -8,6 +8,7 @@ public class Fishing extends Skill {
 
     public Fishing() {
         super(SkillCollection.PLAYER_FISHING);
+        this.maximumLevel = 99;
     }
 
     @Override

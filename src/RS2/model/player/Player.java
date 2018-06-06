@@ -33,7 +33,7 @@ public abstract class Player {
     public final Inventory inventory = new Inventory();
     public final Bank bank = new Bank();
     public final Equipment equipment = new Equipment();
-    public final SkillCollection skills = new SkillCollection(this);
+    public final SkillCollection skills;
     public final int[] BOWS = {9185, 839, 845, 847, 851, 855, 859, 841, 843,
             849, 853, 857, 861, 4212, 4214, 4215, 11235, 4216, 4217, 4218,
             4219, 4220, 4221, 4222, 4223, 6724, 4734, 4934, 4935, 4936, 4937};
@@ -177,7 +177,6 @@ public abstract class Player {
             4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 2097152,
             8388608, 16777216, 67108864, 134217728};
     public final int walkingQueueSize = 50;
-    public final PlayerSkills playerSkills1 = new PlayerSkills();
     private final Scheduler scheduler = new Scheduler();
     public ArrayList<String> killedPlayers = new ArrayList<String>();
     public ArrayList<Integer> attackedPlayers = new ArrayList<Integer>();
@@ -456,22 +455,7 @@ public abstract class Player {
         for (int i = 0; i < inventory.getItemAmounts().length; i++) {
             inventory.getItemAmounts()[i] = 0;
         }
-
-        for (int i = 0; i < playerSkills1.getPlayerLevel().length; i++) {
-            if (i == 3) {
-                playerSkills1.getPlayerLevel()[i] = 10;
-            } else {
-                playerSkills1.getPlayerLevel()[i] = 1;
-            }
-        }
-
-        for (int i = 0; i < playerSkills1.getPlayerXP().length; i++) {
-            if (i == 3) {
-                playerSkills1.getPlayerXP()[i] = 1300;
-            } else {
-                playerSkills1.getPlayerXP()[i] = 0;
-            }
-        }
+        
         for (int i = 0; i < Settings.BANK_SIZE; i++) {
             bank.getItemIds()[i] = 0;
         }
@@ -479,6 +463,8 @@ public abstract class Player {
         for (int i = 0; i < Settings.BANK_SIZE; i++) {
             bank.getItemAmounts()[i] = 0;
         }
+
+        this.skills = new SkillCollection(this);
 
         playerAppearance[0] = 0; // gender
         playerAppearance[1] = 7; // head
@@ -1134,24 +1120,24 @@ public abstract class Player {
 
         playerProps.writeQWord(Misc.playerNameToInt64(playerName));
 
-        int mag = (int) ((getLevelForXP(playerSkills1.getPlayerXP()[6])) * 1.5);
-        int ran = (int) ((getLevelForXP(playerSkills1.getPlayerXP()[4])) * 1.5);
-        int attstr = (int) ((double) (getLevelForXP(playerSkills1.getPlayerXP()[0])) + (double) (getLevelForXP(playerSkills1.getPlayerXP()[2])));
+        int mag = (int) (skills.getSkill(6).getActualLevel() * 1.5);
+        int ran = (int) (skills.getSkill(4).getActualLevel() * 1.5);
+        int attstr = (int) ((double) skills.getSkill(0).getActualLevel() + (double) skills.getSkill(2).getActualLevel());
 
         combatLevel = 0;
         if (ran > attstr) {
-            combatLevel = (int) (((getLevelForXP(playerSkills1.getPlayerXP()[1])) * 0.25)
-                    + ((getLevelForXP(playerSkills1.getPlayerXP()[3])) * 0.25)
-                    + ((getLevelForXP(playerSkills1.getPlayerXP()[5])) * 0.125) + ((getLevelForXP(playerSkills1.getPlayerXP()[4])) * 0.4875));
+            combatLevel = (int) ((skills.getSkill(1).getActualLevel() * 0.25)
+                    + (skills.getSkill(3).getActualLevel() * 0.25)
+                    + (skills.getSkill(5).getActualLevel() * 0.125) + (skills.getSkill(4).getActualLevel() * 0.4875));
         } else if (mag > attstr) {
-            combatLevel = (int) (((getLevelForXP(playerSkills1.getPlayerXP()[1])) * 0.25)
-                    + ((getLevelForXP(playerSkills1.getPlayerXP()[3])) * 0.25)
-                    + ((getLevelForXP(playerSkills1.getPlayerXP()[5])) * 0.125) + ((getLevelForXP(playerSkills1.getPlayerXP()[6])) * 0.4875));
+            combatLevel = (int) ((skills.getSkill(1).getActualLevel() * 0.25)
+                    + (skills.getSkill(3).getActualLevel() * 0.25)
+                    + (skills.getSkill(5).getActualLevel() * 0.125) + (skills.getSkill(6).getActualLevel() * 0.4875));
         } else {
-            combatLevel = (int) (((getLevelForXP(playerSkills1.getPlayerXP()[1])) * 0.25)
-                    + ((getLevelForXP(playerSkills1.getPlayerXP()[3])) * 0.25)
-                    + ((getLevelForXP(playerSkills1.getPlayerXP()[5])) * 0.125)
-                    + ((getLevelForXP(playerSkills1.getPlayerXP()[0])) * 0.325) + ((getLevelForXP(playerSkills1.getPlayerXP()[2])) * 0.325));
+            combatLevel = (int) ((skills.getSkill(1).getActualLevel() * 0.25)
+                    + (skills.getSkill(3).getActualLevel() * 0.25)
+                    + (skills.getSkill(5).getActualLevel() * 0.125)
+                    + (skills.getSkill(0).getActualLevel() * 0.325) + (skills.getSkill(2).getActualLevel() * 0.325));
         }
         playerProps.writeByte(combatLevel); // combat level
         playerProps.writeByte(playerRights);
@@ -1288,12 +1274,12 @@ public abstract class Player {
         } else {
             str.writeByteA(0); // 0: red hitting - 1: blue hitting
         }
-        if (playerSkills1.getPlayerLevel()[3] <= 0) {
-            playerSkills1.getPlayerLevel()[3] = 0;
+        if (skills.getSkill(3).getCurrentLevel() <= 0) {
+            skills.getSkill(3).setCurrentLevel(0);
             isDead = true;
         }
-        str.writeByteC(playerSkills1.getPlayerLevel()[3]); // Their current hp, for HP bar
-        str.writeByte(getLevelForXP(playerSkills1.getPlayerXP()[3])); // Their max hp, for HP bar
+        str.writeByteC(skills.getSkill(3).getCurrentLevel()); // Their current hp, for HP bar
+        str.writeByte(skills.getSkill(3).getActualLevel()); // Their max hp, for HP bar
 
     }
 
@@ -1308,12 +1294,12 @@ public abstract class Player {
         } else {
             str.writeByteS(0); // 0: red hitting - 1: blue hitting
         }
-        if (playerSkills1.getPlayerLevel()[3] <= 0) {
-            playerSkills1.getPlayerLevel()[3] = 0;
+        if (skills.getSkill(3).getCurrentLevel() <= 0) {
+            skills.getSkill(3).setCurrentLevel(0);
             isDead = true;
         }
-        str.writeByte(playerSkills1.getPlayerLevel()[3]); // Their current hp, for HP bar
-        str.writeByteC(getLevelForXP(playerSkills1.getPlayerXP()[3])); // Their max hp, for HP bar
+        str.writeByte(skills.getSkill(3).getCurrentLevel()); // Their current hp, for HP bar
+        str.writeByteC(skills.getSkill(3).getActualLevel()); // Their max hp, for HP bar
 
     }
 
@@ -1694,9 +1680,9 @@ public abstract class Player {
     }
 
     public void dealDamage(int damage) {
-        if (teleTimer <= 0)
-            playerSkills1.getPlayerLevel()[3] -= damage;
-        else {
+        if (teleTimer <= 0) {
+            skills.addHitpoints(-damage);
+        } else {
             if (hitUpdateRequired)
                 hitUpdateRequired = false;
             if (hitUpdateRequired2)

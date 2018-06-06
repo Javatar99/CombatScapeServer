@@ -2,6 +2,7 @@ package RS2.model.player;
 
 import RS2.Settings;
 import RS2.model.npc.handlers.NPCHandler;
+import RS2.model.skilling.skills.Skill;
 import RS2.util.Misc;
 
 @SuppressWarnings("all")
@@ -175,11 +176,11 @@ public class PlayerAssistant {
 
     }
 
-    public void setSkillLevel(int skillNum, int currentLevel, int XP) {
+    public void setSkillLevel(int skillId, int currentLevel, int XP) {
         synchronized (c) {
             if (c.getOutStream() != null && c != null) {
                 c.getOutStream().createFrame(134);
-                c.getOutStream().writeByte(skillNum);
+                c.getOutStream().writeByte(skillId);
                 c.getOutStream().writeDWord_v1(XP);
                 c.getOutStream().writeByte(currentLevel);
                 c.flushOutStream();
@@ -870,7 +871,7 @@ public class PlayerAssistant {
                     c.alchDelay = System.currentTimeMillis();
                     sendFrame106(6);
                     addSkillXP(c.MAGIC_SPELLS[49][7] * Settings.MAGIC_EXP_RATE, 6);
-                    refreshSkill(6);
+                    c.skills.getSkill(6).updateSkill(c);
                 }
                 break;
 
@@ -890,7 +891,7 @@ public class PlayerAssistant {
                     c.alchDelay = System.currentTimeMillis();
                     sendFrame106(6);
                     addSkillXP(c.MAGIC_SPELLS[50][7] * Settings.MAGIC_EXP_RATE, 6);
-                    refreshSkill(6);
+                    c.skills.getSkill(6).updateSkill(c);
                 }
                 break;
         }
@@ -966,14 +967,7 @@ public class PlayerAssistant {
         c.teleBlockDelay = 0;
     }
 
-    public void handleStatus(int i, int i2, int i3) {
-        if (i == 1)
-            c.getItems().addItem(i2, i3);
-        else if (i == 2) {
-            c.playerSkills1.getPlayerXP()[i2] = c.getPA().getXPForLevel(i3) + 5;
-            c.playerSkills1.getPlayerLevel()[i2] = c.getPA().getLevelForXP(c.playerSkills1.getPlayerXP()[i2]);
-        }
-    }
+    public void handleStatus(int i, int i2, int i3) {}
 
     public void resetFollowers() {
         for (int j = 0; j < PlayerHandler.players.length; j++) {
@@ -1021,8 +1015,8 @@ public class PlayerAssistant {
         }
         c.getCombat().resetPrayers();
         for (int i = 0; i < 20; i++) {
-            c.playerSkills1.getPlayerLevel()[i] = getLevelForXP(c.playerSkills1.getPlayerXP()[i]);
-            c.getPA().refreshSkill(i);
+            c.skills.getSkill(i).setCurrentLevel(c.skills.getSkill(i).getActualLevel());
+            c.skills.getSkill(i).updateSkill(c);
         }
         movePlayer(Settings.RESPAWN_X, Settings.RESPAWN_Y, 0);
         c.isSkulled = false;
@@ -1228,7 +1222,7 @@ public class PlayerAssistant {
         if (c.freezeTimer > 0) {
             return;
         }
-        if (c.isDead || c.playerSkills1.getPlayerLevel()[3] <= 0)
+        if (c.isDead || c.skills.getSkill(3).getCurrentLevel() <= 0)
             return;
 
         int otherX = PlayerHandler.players[c.followId].getX();
@@ -1327,7 +1321,7 @@ public class PlayerAssistant {
         if (c.freezeTimer > 0) {
             return;
         }
-        if (c.isDead || c.playerSkills1.getPlayerLevel()[3] <= 0)
+        if (c.isDead || c.skills.getSkill(3).getCurrentLevel() <= 0)
             return;
 
         int otherX = NPCHandler.npcs[c.followId2].getX();
@@ -1538,13 +1532,13 @@ public class PlayerAssistant {
     }
 
 
-    public void levelUp(int skill) {
-        int totalLevel = (getLevelForXP(c.playerSkills1.getPlayerXP()[0]) + getLevelForXP(c.playerSkills1.getPlayerXP()[1]) + getLevelForXP(c.playerSkills1.getPlayerXP()[2]) + getLevelForXP(c.playerSkills1.getPlayerXP()[3]) + getLevelForXP(c.playerSkills1.getPlayerXP()[4]) + getLevelForXP(c.playerSkills1.getPlayerXP()[5]) + getLevelForXP(c.playerSkills1.getPlayerXP()[6]) + getLevelForXP(c.playerSkills1.getPlayerXP()[7]) + getLevelForXP(c.playerSkills1.getPlayerXP()[8]) + getLevelForXP(c.playerSkills1.getPlayerXP()[9]) + getLevelForXP(c.playerSkills1.getPlayerXP()[10]) + getLevelForXP(c.playerSkills1.getPlayerXP()[11]) + getLevelForXP(c.playerSkills1.getPlayerXP()[12]) + getLevelForXP(c.playerSkills1.getPlayerXP()[13]) + getLevelForXP(c.playerSkills1.getPlayerXP()[14]) + getLevelForXP(c.playerSkills1.getPlayerXP()[15]) + getLevelForXP(c.playerSkills1.getPlayerXP()[16]) + getLevelForXP(c.playerSkills1.getPlayerXP()[17]) + getLevelForXP(c.playerSkills1.getPlayerXP()[18]) + getLevelForXP(c.playerSkills1.getPlayerXP()[19]) + getLevelForXP(c.playerSkills1.getPlayerXP()[20]));
+    public void showLevelUpInterface(int skill) {
+        int totalLevel = c.skills.getTotalLevel();
         sendFrame126("Total Lvl: " + totalLevel, 3984);
         switch (skill) {
             case 0:
                 sendFrame126("Congratulations, you just advanced an attack level!", 6248);
-                sendFrame126("Your attack level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6249);
+                sendFrame126("Your attack level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6249);
                 c.sendMessage("Congratulations, you just advanced an attack level.");
                 sendFrame164(6247);
 
@@ -1552,7 +1546,7 @@ public class PlayerAssistant {
 
             case 1:
                 sendFrame126("Congratulations, you just advanced a defence level!", 6254);
-                sendFrame126("Your defence level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6255);
+                sendFrame126("Your defence level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6255);
                 c.sendMessage("Congratulations, you just advanced a defence level.");
                 sendFrame164(6253);
 
@@ -1560,7 +1554,7 @@ public class PlayerAssistant {
 
             case 2:
                 sendFrame126("Congratulations, you just advanced a strength level!", 6207);
-                sendFrame126("Your strength level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6208);
+                sendFrame126("Your strength level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6208);
                 c.sendMessage("Congratulations, you just advanced a strength level.");
                 sendFrame164(6206);
 
@@ -1568,7 +1562,7 @@ public class PlayerAssistant {
 
             case 3:
                 sendFrame126("Congratulations, you just advanced a hitpoints level!", 6217);
-                sendFrame126("Your hitpoints level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6218);
+                sendFrame126("Your hitpoints level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6218);
                 c.sendMessage("Congratulations, you just advanced a hitpoints level.");
                 sendFrame164(6216);
                 //hitpoints
@@ -1577,7 +1571,7 @@ public class PlayerAssistant {
 
             case 4:
                 sendFrame126("Congratulations, you just advanced a ranged level!", 5453);
-                sendFrame126("Your ranged level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6114);
+                sendFrame126("Your ranged level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6114);
                 c.sendMessage("Congratulations, you just advanced a ranging level.");
                 sendFrame164(4443);
 
@@ -1585,7 +1579,7 @@ public class PlayerAssistant {
 
             case 5:
                 sendFrame126("Congratulations, you just advanced a prayer level!", 6243);
-                sendFrame126("Your prayer level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6244);
+                sendFrame126("Your prayer level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6244);
                 c.sendMessage("Congratulations, you just advanced a prayer level.");
                 sendFrame164(6242);
 
@@ -1593,7 +1587,7 @@ public class PlayerAssistant {
 
             case 6:
                 sendFrame126("Congratulations, you just advanced a magic level!", 6212);
-                sendFrame126("Your magic level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6213);
+                sendFrame126("Your magic level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6213);
                 c.sendMessage("Congratulations, you just advanced a magic level.");
                 sendFrame164(6211);
 
@@ -1601,7 +1595,7 @@ public class PlayerAssistant {
 
             case 7:
                 sendFrame126("Congratulations, you just advanced a cooking level!", 6227);
-                sendFrame126("Your cooking level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6228);
+                sendFrame126("Your cooking level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6228);
                 c.sendMessage("Congratulations, you just advanced a cooking level.");
                 sendFrame164(6226);
 
@@ -1609,7 +1603,7 @@ public class PlayerAssistant {
 
             case 8:
                 sendFrame126("Congratulations, you just advanced a woodcutting level!", 4273);
-                sendFrame126("Your woodcutting level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 4274);
+                sendFrame126("Your woodcutting level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 4274);
                 c.sendMessage("Congratulations, you just advanced a woodcutting level.");
                 sendFrame164(4272);
 
@@ -1617,235 +1611,83 @@ public class PlayerAssistant {
 
             case 9:
                 sendFrame126("Congratulations, you just advanced a fletching level!", 6232);
-                sendFrame126("Your fletching level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6233);
+                sendFrame126("Your fletching level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6233);
                 c.sendMessage("Congratulations, you just advanced a fletching level.");
                 sendFrame164(6231);
                 break;
 
             case 10:
                 sendFrame126("Congratulations, you just advanced a fishing level!", 6259);
-                sendFrame126("Your fishing level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6260);
+                sendFrame126("Your fishing level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6260);
                 c.sendMessage("Congratulations, you just advanced a fishing level.");
                 sendFrame164(6258);
                 break;
 
             case 11:
                 sendFrame126("Congratulations, you just advanced a fire making level!", 4283);
-                sendFrame126("Your firemaking level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 4284);
+                sendFrame126("Your firemaking level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 4284);
                 c.sendMessage("Congratulations, you just advanced a fire making level.");
                 sendFrame164(4282);
                 break;
 
             case 12:
                 sendFrame126("Congratulations, you just advanced a crafting level!", 6264);
-                sendFrame126("Your crafting level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6265);
+                sendFrame126("Your crafting level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6265);
                 c.sendMessage("Congratulations, you just advanced a crafting level.");
                 sendFrame164(6263);
                 break;
 
             case 13:
                 sendFrame126("Congratulations, you just advanced a smithing level!", 6222);
-                sendFrame126("Your smithing level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6223);
+                sendFrame126("Your smithing level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6223);
                 c.sendMessage("Congratulations, you just advanced a smithing level.");
                 sendFrame164(6221);
                 break;
 
             case 14:
                 sendFrame126("Congratulations, you just advanced a mining level!", 4417);
-                sendFrame126("Your mining level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 4438);
+                sendFrame126("Your mining level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 4438);
                 c.sendMessage("Congratulations, you just advanced a mining level.");
                 sendFrame164(4416);
                 break;
 
             case 15:
                 sendFrame126("Congratulations, you just advanced a herblore level!", 6238);
-                sendFrame126("Your herblore level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 6239);
+                sendFrame126("Your herblore level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 6239);
                 c.sendMessage("Congratulations, you just advanced a herblore level.");
                 sendFrame164(6237);
                 break;
 
             case 16:
                 sendFrame126("Congratulations, you just advanced a agility level!", 4278);
-                sendFrame126("Your agility level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 4279);
+                sendFrame126("Your agility level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 4279);
                 c.sendMessage("Congratulations, you just advanced an agility level.");
                 sendFrame164(4277);
                 break;
 
             case 17:
                 sendFrame126("Congratulations, you just advanced a thieving level!", 4263);
-                sendFrame126("Your theiving level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 4264);
+                sendFrame126("Your theiving level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 4264);
                 c.sendMessage("Congratulations, you just advanced a thieving level.");
                 sendFrame164(4261);
                 break;
 
             case 18:
                 sendFrame126("Congratulations, you just advanced a slayer level!", 12123);
-                sendFrame126("Your slayer level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 12124);
+                sendFrame126("Your slayer level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 12124);
                 c.sendMessage("Congratulations, you just advanced a slayer level.");
                 sendFrame164(12122);
                 break;
 
             case 20:
                 sendFrame126("Congratulations, you just advanced a runecrafting level!", 4268);
-                sendFrame126("Your runecrafting level is now " + getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) + ".", 4269);
+                sendFrame126("Your runecrafting level is now " + c.skills.getSkill(skill).getActualLevel() + ".", 4269);
                 c.sendMessage("Congratulations, you just advanced a runecrafting level.");
                 sendFrame164(4267);
                 break;
         }
         c.dialogueAction = 0;
         c.nextChat = 0;
-    }
-
-    public void refreshSkill(int i) {
-        switch (i) {
-            case 0:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[0] + "", 4004);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[0]) + "", 4005);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[0] + "", 4044);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[0]) + 1) + "", 4045);
-                break;
-
-            case 1:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[1] + "", 4008);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[1]) + "", 4009);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[1] + "", 4056);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[1]) + 1) + "", 4057);
-                break;
-
-            case 2:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[2] + "", 4006);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[2]) + "", 4007);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[2] + "", 4050);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[2]) + 1) + "", 4051);
-                break;
-
-            case 3:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[3] + "", 4016);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[3]) + "", 4017);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[3] + "", 4080);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[3]) + 1) + "", 4081);
-                break;
-
-            case 4:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[4] + "", 4010);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[4]) + "", 4011);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[4] + "", 4062);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[4]) + 1) + "", 4063);
-                break;
-
-            case 5:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[5] + "", 4012);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[5]) + "", 4013);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[5] + "", 4068);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[5]) + 1) + "", 4069);
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[5] + "/" + getLevelForXP(c.playerSkills1.getPlayerXP()[5]) + "", 687);//Prayer frame
-                break;
-
-            case 6:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[6] + "", 4014);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[6]) + "", 4015);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[6] + "", 4074);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[6]) + 1) + "", 4075);
-                break;
-
-            case 7:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[7] + "", 4034);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[7]) + "", 4035);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[7] + "", 4134);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[7]) + 1) + "", 4135);
-                break;
-
-            case 8:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[8] + "", 4038);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[8]) + "", 4039);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[8] + "", 4146);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[8]) + 1) + "", 4147);
-                break;
-
-            case 9:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[9] + "", 4026);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[9]) + "", 4027);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[9] + "", 4110);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[9]) + 1) + "", 4111);
-                break;
-
-            case 10:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[10] + "", 4032);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[10]) + "", 4033);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[10] + "", 4128);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[10]) + 1) + "", 4129);
-                break;
-
-            case 11:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[11] + "", 4036);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[11]) + "", 4037);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[11] + "", 4140);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[11]) + 1) + "", 4141);
-                break;
-
-            case 12:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[12] + "", 4024);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[12]) + "", 4025);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[12] + "", 4104);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[12]) + 1) + "", 4105);
-                break;
-
-            case 13:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[13] + "", 4030);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[13]) + "", 4031);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[13] + "", 4122);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[13]) + 1) + "", 4123);
-                break;
-
-            case 14:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[14] + "", 4028);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[14]) + "", 4029);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[14] + "", 4116);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[14]) + 1) + "", 4117);
-                break;
-
-            case 15:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[15] + "", 4020);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[15]) + "", 4021);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[15] + "", 4092);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[15]) + 1) + "", 4093);
-                break;
-
-            case 16:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[16] + "", 4018);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[16]) + "", 4019);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[16] + "", 4086);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[16]) + 1) + "", 4087);
-                break;
-
-            case 17:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[17] + "", 4022);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[17]) + "", 4023);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[17] + "", 4098);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[17]) + 1) + "", 4099);
-                break;
-
-            case 18:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[18] + "", 12166);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[18]) + "", 12167);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[18] + "", 12171);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[18]) + 1) + "", 12172);
-                break;
-
-            case 19:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[19] + "", 13926);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[19]) + "", 13927);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[19] + "", 13921);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[19]) + 1) + "", 13922);
-                break;
-
-            case 20:
-                sendFrame126("" + c.playerSkills1.getPlayerLevel()[20] + "", 4152);
-                sendFrame126("" + getLevelForXP(c.playerSkills1.getPlayerXP()[20]) + "", 4153);
-                sendFrame126("" + c.playerSkills1.getPlayerXP()[20] + "", 4157);
-                sendFrame126("" + getXPForLevel(getLevelForXP(c.playerSkills1.getPlayerXP()[20]) + 1) + "", 4158);
-                break;
-        }
     }
 
     public int getXPForLevel(int level) {
@@ -1877,25 +1719,12 @@ public class PlayerAssistant {
         return 0;
     }
 
-    public boolean addSkillXP(int amount, int skill) {
-        if (amount + c.playerSkills1.getPlayerXP()[skill] < 0 || c.playerSkills1.getPlayerXP()[skill] > 200000000) {
-            if (c.playerSkills1.getPlayerXP()[skill] > 200000000) {
-                c.playerSkills1.getPlayerXP()[skill] = 200000000;
-            }
-            return false;
-        }
+    public boolean addSkillXP(int amount, int id) {
+        Skill skill = c.skills.getSkill(id);
         amount *= Settings.SERVER_EXP_BONUS;
-        int oldLevel = getLevelForXP(c.playerSkills1.getPlayerXP()[skill]);
-        c.playerSkills1.getPlayerXP()[skill] += amount;
-        if (oldLevel < getLevelForXP(c.playerSkills1.getPlayerXP()[skill])) {
-            if (c.playerSkills1.getPlayerLevel()[skill] < c.getLevelForXP(c.playerSkills1.getPlayerXP()[skill]) && skill != 3 && skill != 5)
-                c.playerSkills1.getPlayerLevel()[skill] = c.getLevelForXP(c.playerSkills1.getPlayerXP()[skill]);
-            levelUp(skill);
-            c.gfx100(199);
-            requestUpdates();
-        }
-        setSkillLevel(skill, c.playerSkills1.getPlayerLevel()[skill], c.playerSkills1.getPlayerXP()[skill]);
-        refreshSkill(skill);
+        skill.addExperience(c, amount);
+        setSkillLevel(skill.getId(), skill.getCurrentLevel(), skill.getExperience());
+        skill.updateSkill(c);
         return true;
     }
 

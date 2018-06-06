@@ -8,6 +8,8 @@ import RS2.model.shop.definitions.Shop;
 import RS2.model.shop.definitions.ShopItem;
 import RS2.model.shop.definitions.ShopLoader;
 import RS2.model.shop.definitions.ShopType;
+import RS2.model.skilling.skills.Skill;
+import RS2.model.skilling.skills.impl.EmptySkill;
 
 @SuppressWarnings("all")
 public class ShopAssistant {
@@ -317,8 +319,9 @@ public class ShopAssistant {
 
     public int get99Count() {
         int count = 0;
-        for (int j = 0; j < c.playerSkills1.getPlayerLevel().length; j++) {
-            if (c.getLevelForXP(c.playerSkills1.getPlayerXP()[j]) >= 99) {
+
+        for(Skill s: c.skills){
+            if(s.getActualLevel() >= s.getMaximumLevel()){
                 count++;
             }
         }
@@ -343,7 +346,7 @@ public class ShopAssistant {
             c.getOutStream().writeWord(TotalItems);
             int TotalCount = 0;
             for (int i = 0; i < 21; i++) {
-                if (c.getLevelForXP(c.playerSkills1.getPlayerXP()[i]) < 99)
+                if (c.skills.getSkill(i).getActualLevel() < 99)
                     continue;
                 c.getOutStream().writeByte(1);
                 c.getOutStream().writeWordBigEndianA(skillCapes[i] + 2);
@@ -364,7 +367,7 @@ public class ShopAssistant {
             if (skillCapes[j] == item || skillCapes[j] + 1 == item) {
                 if (c.getItems().freeSlots() > 1) {
                     if (c.getItems().playerHasItem(995, 99000)) {
-                        if (c.getLevelForXP(c.playerSkills1.getPlayerXP()[j]) >= 99) {
+                        if (c.skills.getSkill(j).getActualLevel() >= 99) {
                             c.getItems().deleteItem(995, c.getItems().getItemSlot(995), 99000);
                             c.getItems().addItem(skillCapes[j] + nn, 1);
                             c.getItems().addItem(skillCapes[j] + 2, 1);

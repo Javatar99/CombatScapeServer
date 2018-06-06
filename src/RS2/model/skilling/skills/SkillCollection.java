@@ -5,6 +5,7 @@ import RS2.model.skilling.skills.impl.EmptySkill;
 import RS2.model.skilling.skills.impl.Fishing;
 import RS2.model.skilling.skills.impl.combat.CombatSkill;
 import RS2.model.skilling.skills.impl.combat.Magic;
+import RS2.model.skilling.skills.impl.combat.PlayerHealth;
 import RS2.model.skilling.skills.impl.combat.Prayer;
 
 import java.util.Arrays;
@@ -44,7 +45,9 @@ public final class SkillCollection implements Iterable<Skill> {
     public SkillCollection(Player c) {
         this.player = c;
         this.skills = new Skill[25];
-        Arrays.fill(this.skills, EmptySkill.EMPTY_SKILL);
+        for (int i = 0; i < this.skills.length; i++) {
+            this.skills[i] = new EmptySkill(i);
+        }
         setCombatSkills();
         this.skills[PLAYER_FISHING] = new Fishing();
     }
@@ -53,7 +56,7 @@ public final class SkillCollection implements Iterable<Skill> {
         this.skills[PLAYER_ATTACK] = new CombatSkill(PLAYER_ATTACK);
         this.skills[PLAYER_DEFENCE] = new CombatSkill(PLAYER_DEFENCE);
         this.skills[PLAYER_STRENGTH] = new CombatSkill(PLAYER_STRENGTH);
-        this.skills[PLAYER_HITPOINTS] = new CombatSkill(PLAYER_HITPOINTS);
+        this.skills[PLAYER_HITPOINTS] = new PlayerHealth();
         this.skills[PLAYER_RANGED] = new CombatSkill(PLAYER_RANGED);
         this.skills[PLAYER_PRAYER] = prayerRef = new Prayer();
         this.skills[PLAYER_MAGIC] = magicRef = new Magic();
@@ -98,6 +101,18 @@ public final class SkillCollection implements Iterable<Skill> {
 
     public final Magic getMagic() {
         return this.magicRef;
+    }
+
+    public final int size(){
+        return this.skills.length;
+    }
+
+    public final int getTotalLevel(){
+        return stream().mapToInt(Skill::getActualLevel).sum();
+    }
+
+    public final void refreshAll(){
+        forEach(s -> s.updateSkill(this.player));
     }
 
     @Override

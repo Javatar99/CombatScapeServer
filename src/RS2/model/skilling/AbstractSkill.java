@@ -23,4 +23,16 @@ public interface AbstractSkill {
         }
         return 0;
     }
+
+    default int getXPForLevel(int level) {
+        int points = 0;
+        int output = 0;
+        for (int lvl = 1; lvl <= level; lvl++) {
+            points += Math.floor(lvl + 300.0 * Math.pow(2.0, lvl / 7.0));
+            if (lvl >= level)
+                return output;
+            output = (int) Math.floor(points / 4);
+        }
+        return 0;
+    }
 }

@@ -154,10 +154,7 @@ public class Client extends Player {
                     disconnected = true;
             }
         }
-        for (int i = 0; i < 25; i++) {
-            getPA().setSkillLevel(i, playerSkills1.getPlayerLevel()[i], playerSkills1.getPlayerXP()[i]);
-            getPA().refreshSkill(i);
-        }
+        this.skills.refreshAll();
         for (int p = 0; p < PRAYER.length; p++) { // reset prayer glows
             prayerActive[p] = false;
             getPA().sendFrame36(PRAYER_GLOW[p], 0);
@@ -278,21 +275,7 @@ public class Client extends Player {
 
         if (System.currentTimeMillis() - restoreStatsDelay > 60000) {
             restoreStatsDelay = System.currentTimeMillis();
-            for (int level = 0; level < playerSkills1.getPlayerLevel().length; level++) {
-                if (playerSkills1.getPlayerLevel()[level] < getLevelForXP(playerSkills1.getPlayerXP()[level])) {
-                    if (level != 5) { // prayer doesn't restore
-                        playerSkills1.getPlayerLevel()[level] += 1;
-                        getPA().setSkillLevel(level, playerSkills1.getPlayerLevel()[level],
-                                playerSkills1.getPlayerXP()[level]);
-                        getPA().refreshSkill(level);
-                    }
-                } else if (playerSkills1.getPlayerLevel()[level] > getLevelForXP(playerSkills1.getPlayerXP()[level])) {
-                    playerSkills1.getPlayerLevel()[level] -= 1;
-                    getPA().setSkillLevel(level, playerSkills1.getPlayerLevel()[level],
-                            playerSkills1.getPlayerXP()[level]);
-                    getPA().refreshSkill(level);
-                }
-            }
+            this.skills.forEach(Skill::restoreStat);
         }
 
         if (inWild()) {

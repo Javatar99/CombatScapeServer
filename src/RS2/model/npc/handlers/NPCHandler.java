@@ -14,6 +14,10 @@ import RS2.model.player.Client;
 import RS2.model.player.PlayerHandler;
 import RS2.util.Misc;
 
+import static RS2.model.player.PlayerHandler.players;
+import static RS2.util.Misc.random;
+import static java.lang.System.currentTimeMillis;
+
 @SuppressWarnings("all")
 public class NPCHandler {
 	
@@ -83,48 +87,48 @@ public class NPCHandler {
 		int max = getMaxHit(i);
 		for (int j = 0; j < PlayerHandler.players.length; j++) {
 			if (PlayerHandler.players[j] != null) {
-				Client c = (Client) PlayerHandler.players[j];
-				if (c.isDead || c.heightLevel != npcs[i].heightLevel)
-					continue;
-				if (PlayerHandler.players[j].goodDistance(c.absX, c.absY,
-						npcs[i].absX, npcs[i].absY, 15)) {
-					if (npcs[i].attackType == 2) {
-						if (!c.prayerActive[16]) {
-							if (Misc.random(500) + 200 > Misc.random(c
-									.getCombat().mageDef())) {
-								int dam = Misc.random(max);
-								c.dealDamage(dam);
-								c.handleHitMask(dam);
-							} else {
-								c.dealDamage(0);
-								c.handleHitMask(0);
-							}
-						} else {
-							c.dealDamage(0);
-							c.handleHitMask(0);
-						}
-					} else if (npcs[i].attackType == 1) {
-						if (!c.prayerActive[17]) {
-							int dam = Misc.random(max);
-							if (Misc.random(500) + 200 > Misc.random(c
-									.getCombat().calculateRangeDefence())) {
-								c.dealDamage(dam);
-								c.handleHitMask(dam);
-							} else {
-								c.dealDamage(0);
-								c.handleHitMask(0);
-							}
-						} else {
-							c.dealDamage(0);
-							c.handleHitMask(0);
-						}
-					}
-					if (npcs[i].endGfx > 0) {
-						c.gfx0(npcs[i].endGfx);
-					}
-				}
-				c.getPA().refreshSkill(3);
-			}
+                Client c = (Client) players[j];
+                if (c.isDead || c.heightLevel != npcs[i].heightLevel)
+                    continue;
+                if (players[j].goodDistance(c.absX, c.absY,
+                        npcs[i].absX, npcs[i].absY, 15)) {
+                    if (npcs[i].attackType == 2) {
+                        if (!c.prayerActive[16]) {
+                            if (random(500) + 200 > random(c
+                                    .getCombat().mageDef())) {
+                                int dam = random(max);
+                                c.dealDamage(dam);
+                                c.handleHitMask(dam);
+                            } else {
+                                c.dealDamage(0);
+                                c.handleHitMask(0);
+                            }
+                        } else {
+                            c.dealDamage(0);
+                            c.handleHitMask(0);
+                        }
+                    } else if (npcs[i].attackType == 1) {
+                        if (!c.prayerActive[17]) {
+                            int dam = random(max);
+                            if (random(500) + 200 > random(c
+                                    .getCombat().calculateRangeDefence())) {
+                                c.dealDamage(dam);
+                                c.handleHitMask(dam);
+                            } else {
+                                c.dealDamage(0);
+                                c.handleHitMask(0);
+                            }
+                        } else {
+                            c.dealDamage(0);
+                            c.handleHitMask(0);
+                        }
+                    }
+                    if (npcs[i].endGfx > 0) {
+                        c.gfx0(npcs[i].endGfx);
+                    }
+                }
+                c.skills.getSkill(3).updateSkill(c);
+            }
 		}
 	}
 
@@ -1924,80 +1928,77 @@ public class NPCHandler {
 				c.startAnimation(c.getCombat().getBlockEmote());
 			}
 			if (c.respawnTimer <= 0) {
-				int damage = 0;
-				if (npcs[i].attackType == 0) {
-					damage = Misc.random(npcs[i].maxHit);
-					if (10 + Misc.random(c.getCombat().calculateMeleeDefence()) > Misc
-							.random(NPCHandler.npcs[i].attack)) {
-						damage = 0;
-					}
-					if (c.prayerActive[18]) { // protect from melee
-						damage = 0;
-					}
-					if (c.playerSkills1.getPlayerLevel()[3] - damage < 0) {
-						damage = c.playerSkills1.getPlayerLevel()[3];
-					}
-				}
+                int damage = 0;
+                if (npcs[i].attackType == 0) {
+                    damage = random(npcs[i].maxHit);
+                    if (10 + random(c.getCombat().calculateMeleeDefence()) > random(npcs[i].attack)) {
+                        damage = 0;
+                    }
+                    if (c.prayerActive[18]) { // protect from melee
+                        damage = 0;
+                    }
+                    if (c.skills.getSkill(3).getCurrentLevel() - damage < 0) {
+                        damage = c.skills.getSkill(3).getCurrentLevel();
+                    }
+                }
 
-				if (npcs[i].attackType == 1) { // range
-					damage = Misc.random(npcs[i].maxHit);
-					if (10 + Misc.random(c.getCombat().calculateRangeDefence()) > Misc
-							.random(NPCHandler.npcs[i].attack)) {
-						damage = 0;
-					}
-					if (c.prayerActive[17]) { // protect from range
-						damage = 0;
-					}
-					if (c.playerSkills1.getPlayerLevel()[3] - damage < 0) {
-						damage = c.playerSkills1.getPlayerLevel()[3];
-					}
-				}
+                if (npcs[i].attackType == 1) { // range
+                    damage = random(npcs[i].maxHit);
+                    if (10 + random(c.getCombat().calculateRangeDefence()) > random(npcs[i].attack)) {
+                        damage = 0;
+                    }
+                    if (c.prayerActive[17]) { // protect from range
+                        damage = 0;
+                    }
+                    if (c.skills.getSkill(3).getCurrentLevel() - damage < 0) {
+                        damage = c.skills.getSkill(3).getCurrentLevel();
+                    }
+                }
 
-				if (npcs[i].attackType == 2) { // magic
-					damage = Misc.random(npcs[i].maxHit);
-					boolean magicFailed = false;
-					if (10 + Misc.random(c.getCombat().mageDef()) > Misc
-							.random(NPCHandler.npcs[i].attack)) {
-						damage = 0;
-						magicFailed = true;
-					}
-					if (c.prayerActive[16]) { // protect from magic
-						damage = 0;
-						magicFailed = true;
-					}
-					if (c.playerSkills1.getPlayerLevel()[3] - damage < 0) {
-						damage = c.playerSkills1.getPlayerLevel()[3];
-					}
-					if (npcs[i].endGfx > 0
-							&& (!magicFailed || isFightCaveNpc(i))) {
-						c.gfx100(npcs[i].endGfx);
-					} else {
-						c.gfx100(85);
-					}
-				}
+                if (npcs[i].attackType == 2) { // magic
+                    damage = random(npcs[i].maxHit);
+                    boolean magicFailed = false;
+                    if (10 + random(c.getCombat().mageDef()) > random(npcs[i].attack)) {
+                        damage = 0;
+                        magicFailed = true;
+                    }
+                    if (c.prayerActive[16]) { // protect from magic
+                        damage = 0;
+                        magicFailed = true;
+                    }
+                    if (c.skills.getSkill(3).getCurrentLevel() - damage < 0) {
+                        damage = c.skills.getSkill(3).getCurrentLevel();
+                    }
+                    if (npcs[i].endGfx > 0
+                            && (!magicFailed || isFightCaveNpc(i))) {
+                        c.gfx100(npcs[i].endGfx);
+                    } else {
+                        c.gfx100(85);
+                    }
+                }
 
-				if (npcs[i].attackType == 3) { // fire breath
-					int anti = c.getPA().antiFire();
-					if (anti == 0) {
-						damage = Misc.random(30) + 10;
-						c.sendMessage("You are badly burnt by the dragon fire!");
-					} else if (anti == 1)
-						damage = Misc.random(20);
-					else if (anti == 2)
-						damage = Misc.random(5);
-					if (c.playerSkills1.getPlayerLevel()[3] - damage < 0)
-						damage = c.playerSkills1.getPlayerLevel()[3];
-					c.gfx100(npcs[i].endGfx);
-				}
-				handleSpecialEffects(c, i, damage);
-				c.logoutDelay = System.currentTimeMillis(); // logout delay
-				// c.setHitDiff(damage);
-				c.handleHitMask(damage);
-                c.playerSkills1.getPlayerLevel()[3] -= damage;
-				c.getPA().refreshSkill(3);
-				c.updateRequired = true;
-				// c.setHitUpdateRequired(true);
-			}
+                if (npcs[i].attackType == 3) { // fire breath
+                    int anti = c.getPA().antiFire();
+                    if (anti == 0) {
+                        damage = random(30) + 10;
+                        c.sendMessage("You are badly burnt by the dragon fire!");
+                    } else if (anti == 1)
+                        damage = random(20);
+                    else if (anti == 2)
+                        damage = random(5);
+                    if (c.skills.getSkill(3).getCurrentLevel() - damage < 0)
+                        damage = c.skills.getSkill(3).getCurrentLevel();
+                    c.gfx100(npcs[i].endGfx);
+                }
+                handleSpecialEffects(c, i, damage);
+                c.logoutDelay = currentTimeMillis(); // logout delay
+                // c.setHitDiff(damage);
+                c.handleHitMask(damage);
+                c.skills.getSkill(3).decrementCurrentLevel(damage);
+                c.skills.getSkill(3).updateSkill(c);
+                c.updateRequired = true;
+                // c.setHitUpdateRequired(true);
+            }
 		}
 	}
 
@@ -2005,9 +2006,9 @@ public class NPCHandler {
 		if (npcs[i].npcType == 2892 || npcs[i].npcType == 2894) {
 			if (damage > 0) {
 				if (c != null) {
-					if (c.playerSkills1.getPlayerLevel()[5] > 0) {
-                        c.playerSkills1.getPlayerLevel()[5]--;
-						c.getPA().refreshSkill(5);
+					if (c.skills.getPrayer().getCurrentLevel() > 0) {
+						c.skills.getPrayer().decrementPrayer();
+						c.skills.getPrayer().updateSkill(c);
 						c.getPA().appendPoison(12);
 					}
 				}

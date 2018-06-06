@@ -589,7 +589,7 @@ public class ItemAssistant {
         List<String> msgs = new ArrayList<>();
         for (int id = 0; id < def.levelRequirements.length; id++) {
             final int level = def.levelRequirements[id];
-            if (level > c.getLevelForXP(c.playerSkills1.getPlayerXP()[id])) {
+            if (level > c.skills.getSkill(id).getActualLevel()) {
                 msgs.add("You need a skill level of " + level + " in " + Misc.getSkillName(id) + ".");
             }
         }
@@ -1071,7 +1071,7 @@ public class ItemAssistant {
                         || targetSlot == 4 || targetSlot == 0
                         || targetSlot == 9 || targetSlot == 10) {
                     if (c.defenceLevelReq > 0) {
-                        if (c.getPA().getLevelForXP(c.playerSkills1.getPlayerXP()[1]) < c.defenceLevelReq) {
+                        if (c.skills.getSkill(1).getActualLevel() < c.defenceLevelReq) {
                             c.sendMessage("You need a defence level of "
                                     + c.defenceLevelReq
                                     + " to wear this item.");
@@ -1079,7 +1079,7 @@ public class ItemAssistant {
                         }
                     }
                     if (c.rangeLevelReq > 0) {
-                        if (c.getPA().getLevelForXP(c.playerSkills1.getPlayerXP()[4]) < c.rangeLevelReq) {
+                        if (c.skills.getSkill(4).getActualLevel() < c.rangeLevelReq) {
                             c.sendMessage("You need a range level of "
                                     + c.rangeLevelReq
                                     + " to wear this item.");
@@ -1087,7 +1087,7 @@ public class ItemAssistant {
                         }
                     }
                     if (c.magicLevelReq > 0) {
-                        if (c.getPA().getLevelForXP(c.playerSkills1.getPlayerXP()[6]) < c.magicLevelReq) {
+                        if (c.skills.getSkill(6).getActualLevel() < c.magicLevelReq) {
                             c.sendMessage("You need a magic level of "
                                     + c.magicLevelReq
                                     + " to wear this item.");
@@ -1097,7 +1097,7 @@ public class ItemAssistant {
                 }
                 if (targetSlot == 3) {
                     if (c.attackLevelReq > 0) {
-                        if (c.getPA().getLevelForXP(c.playerSkills1.getPlayerXP()[0]) < c.attackLevelReq) {
+                        if (c.skills.getSkill(0).getActualLevel() < c.attackLevelReq) {
                             c.sendMessage("You need an attack level of "
                                     + c.attackLevelReq
                                     + " to wield this weapon.");
@@ -1105,7 +1105,7 @@ public class ItemAssistant {
                         }
                     }
                     if (c.rangeLevelReq > 0) {
-                        if (c.getPA().getLevelForXP(c.playerSkills1.getPlayerXP()[4]) < c.rangeLevelReq) {
+                        if (c.skills.getSkill(4).getActualLevel() < c.rangeLevelReq) {
                             c.sendMessage("You need a range level of "
                                     + c.rangeLevelReq
                                     + " to wield this weapon.");
@@ -1113,7 +1113,7 @@ public class ItemAssistant {
                         }
                     }
                     if (c.magicLevelReq > 0) {
-                        if (c.getPA().getLevelForXP(c.playerSkills1.getPlayerXP()[6]) < c.magicLevelReq) {
+                        if (c.skills.getSkill(6).getActualLevel() < c.magicLevelReq) {
                             c.sendMessage("You need a magic level of "
                                     + c.magicLevelReq
                                     + " to wield this weapon.");

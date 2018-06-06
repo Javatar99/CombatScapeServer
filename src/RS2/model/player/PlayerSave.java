@@ -4,6 +4,8 @@ import RS2.util.Misc;
 
 import java.io.*;
 
+import static java.lang.Integer.parseInt;
+
 public class PlayerSave {
 	/**
 	 * Loading
@@ -101,11 +103,9 @@ public class PlayerSave {
 					break;
 				case 5:
 					if (token.equals("character-skill")) {
-                        p.playerSkills1.getPlayerLevel()[Integer.parseInt(token3[0])] = Integer
-								.parseInt(token3[1]);
-                        p.playerSkills1.getPlayerXP()[Integer.parseInt(token3[0])] = Integer
-								.parseInt(token3[2]);
-					}
+                        p.skills.getSkill(parseInt(token3[0])).setCurrentLevel(parseInt(token3[1]));
+                        p.skills.getSkill(parseInt(token3[0])).setExperience(parseInt(token3[2]));
+                    }
 					break;
 				case 6:
 					if (token.equals("character-item")) {
@@ -297,16 +297,15 @@ public class PlayerSave {
 			/* SKILLS */
 			characterfile.write("[SKILLS]", 0, 8);
 			characterfile.newLine();
-			for (int i = 0; i < p.playerSkills1.getPlayerLevel().length; i++) {
+			for (int i = 0; i < p.skills.size(); i++) {
 				characterfile.write("character-skill = ", 0, 18);
 				characterfile.write(Integer.toString(i), 0, Integer.toString(i)
 						.length());
 				characterfile.write("	", 0, 1);
-				characterfile.write(Integer.toString(p.playerSkills1.getPlayerLevel()[i]), 0,
-						Integer.toString(p.playerSkills1.getPlayerLevel()[i]).length());
+				characterfile.write(Integer.toString(p.skills.getSkill(i).getCurrentLevel()), 0,
+						Integer.toString(p.skills.getSkill(i).getCurrentLevel()).length());
 				characterfile.write("	", 0, 1);
-				characterfile.write(Integer.toString(p.playerSkills1.getPlayerXP()[i]), 0, Integer
-						.toString(p.playerSkills1.getPlayerXP()[i]).length());
+				characterfile.write(Integer.toString(p.skills.getSkill(i).getExperience()));
 				characterfile.newLine();
 			}
 			characterfile.newLine();

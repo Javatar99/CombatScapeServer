@@ -5,14 +5,8 @@ import RS2.model.skilling.skills.Skill;
 
 public class EmptySkill extends Skill {
 
-    public static final EmptySkill EMPTY_SKILL = new EmptySkill();
-
-    private EmptySkill(){
-        super(-1);
-        this.currentLevel = 1;
-        this.experience = 0;
-        this.actualLevel = 1;
-        this.maximumLevel = 1;
+    public EmptySkill(int id){
+        super(id);
     }
 
     @Override
